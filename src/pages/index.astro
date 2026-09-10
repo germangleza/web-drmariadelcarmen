@@ -19,6 +19,7 @@ const hours = formatOpeningHours(b.openingHours);
 
 const waFoto = whatsappUrl('Hola, te mando una foto de mi sonrisa para saber qué opciones tengo');
 const waEmpezar = whatsappUrl('Hola, quiero empezar con una valoración');
+const waAgendar = whatsappUrl('Hola, quiero una valoración de mi sonrisa');
 
 const painPoints = [
   'Evitas sonreír mostrando los dientes.',
@@ -96,7 +97,7 @@ const faqs = [
             </defs>
             <rect width="520" height="520" fill="url(#g1)"/>
             <!-- guías -->
-            <g stroke="#3EB8C3" stroke-width="1.2" stroke-dasharray="5 6" opacity=".7">
+            <g class="guias" stroke="#3EB8C3" stroke-width="1.2" stroke-dasharray="5 6">
               <line x1="260" y1="40" x2="260" y2="480"/>
               <line x1="60" y1="230" x2="460" y2="230"/>
               <path d="M90 300 C170 380 350 380 430 300" fill="none"/>
@@ -115,7 +116,7 @@ const faqs = [
               <rect x="366" y="261" width="22" height="34" rx="8"/>
             </g>
             <!-- propuesta (overlay turquesa) -->
-            <g fill="none" stroke="#3EB8C3" stroke-width="2">
+            <g class="propuesta" fill="none" stroke="#3EB8C3" stroke-width="2">
               <rect x="221" y="249" width="38" height="66" rx="12"/>
               <rect x="261" y="249" width="38" height="66" rx="12"/>
               <rect x="186" y="253" width="33" height="56" rx="11"/>
@@ -141,7 +142,7 @@ const faqs = [
   </section>
 
   <div class="strip">
-    <div class="wrap">
+    <div class="wrap" data-reveal-stagger>
       <span><svg><use href="#i-check"/></svg>Céd. Prof. {licenseNumber}</span>
       {b.cofepris && <span><svg><use href="#i-check"/></svg>COFEPRIS {b.cofepris}</span>}
       <span><svg><use href="#i-check"/></svg>Especialistas en la misma clínica</span>
@@ -151,11 +152,11 @@ const faqs = [
 
   <section class="identify" aria-labelledby="identify-title">
     <div class="wrap">
-      <div class="sticky">
+      <div class="sticky" data-reveal>
         <h2 id="identify-title">¿Te pasa algo de esto?</h2>
         <p class="close"><strong>Nada de esto es vanidad.</strong> Es que algo de tu sonrisa no te representa. Y casi siempre tiene una solución más sencilla de lo que imaginas.</p>
       </div>
-      <ul>
+      <ul data-reveal-stagger>
         {painPoints.map((p) => <li>{p}</li>)}
       </ul>
     </div>
@@ -163,14 +164,14 @@ const faqs = [
 
   <section class="different" aria-labelledby="different-title">
     <div class="wrap">
-      <div class="head">
+      <div class="head" data-reveal-stagger>
         <h2 id="different-title">Conservar antes que cubrir.</h2>
         <div>
           <p class="lead">En muchas clínicas la respuesta a todo es una carilla. Aquí no. Antes de proponer cualquier tratamiento revisamos si un aclaramiento, una resina o una corrección pequeña resuelve lo que no te gusta.</p>
           <p class="lead">Cuando sí se necesita una carilla, se hace con el mínimo desgaste del diente. El objetivo no es darte una sonrisa nueva: es mejorar la tuya.</p>
         </div>
       </div>
-      <div class="pillars">
+      <div class="pillars" data-reveal-stagger>
         {pillars.map((p) => (
           <div class="pillar">
             <div class="glyph"><svg><use href={`#${p.icon}`}/></svg></div>
@@ -184,20 +185,20 @@ const faqs = [
 
   <section class="process" id="proceso" aria-labelledby="proceso-title">
     <div class="wrap">
-      <h2 id="proceso-title">Así renovamos tu sonrisa contigo.</h2>
-      <p class="lead">Cinco pasos, sin sorpresas. Tú decides en cada uno.</p>
-      <ol class="steps">
+      <h2 id="proceso-title" data-reveal>Así renovamos tu sonrisa contigo.</h2>
+      <p class="lead" data-reveal style="--d:120ms">Cinco pasos, sin sorpresas. Tú decides en cada uno.</p>
+      <ol class="steps" data-reveal-stagger>
         {steps.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
       </ol>
-      <a class="btn btn-turq wa-link" href={waEmpezar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Quiero empezar con una valoración</a>
+      <a class="btn btn-turq wa-link" data-reveal href={waEmpezar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Quiero empezar con una valoración</a>
     </div>
   </section>
 
   <section class="services" id="servicios" aria-labelledby="servicios-title">
     <div class="wrap">
-      <h2 id="servicios-title">Estética que empieza por una boca sana.</h2>
-      <p class="lead">Una carilla sobre un diente enfermo no dura. Por eso en la clínica hay especialistas para toda la boca: la doctora diagnostica y, según tu caso, lo trabaja ella o te canaliza con el especialista adecuado del equipo.</p>
-      <div class="layout">
+      <h2 id="servicios-title" data-reveal>Estética que empieza por una boca sana.</h2>
+      <p class="lead" data-reveal style="--d:120ms">Una carilla sobre un diente enfermo no dura. Por eso en la clínica hay especialistas para toda la boca: la doctora diagnostica y, según tu caso, lo trabaja ella o te canaliza con el especialista adecuado del equipo.</p>
+      <div class="layout" data-reveal-stagger>
         <div class="svc main">
           <div>
             <h3>{services.main.title}</h3>
@@ -215,16 +216,16 @@ const faqs = [
           ))}
         </div>
       </div>
-      <p class="close">¿No sabes qué necesitas? Para eso está la valoración.</p>
+      <p class="close" data-reveal>¿No sabes qué necesitas? Para eso está la valoración.</p>
     </div>
   </section>
 
   <section class="doctor" id="doctora" aria-labelledby="doctora-title">
     <div class="wrap">
       {hasPortrait
-        ? <div class="portrait"><img src={doctor.photo} alt={`Retrato de la ${doctor.name}`} width="480" height="600" loading="lazy" /></div>
-        : <div class="portrait" role="img" aria-label={`Retrato de la ${doctor.name}`}></div>}
-      <div>
+        ? <div class="portrait" data-reveal><img src={doctor.photo} alt={`Retrato de la ${doctor.name}`} width="480" height="600" loading="lazy" /></div>
+        : <div class="portrait" data-reveal role="img" aria-label={`Retrato de la ${doctor.name}`}></div>}
+      <div data-reveal style="--d:150ms">
         <h2 id="doctora-title">Quién va a trabajar en tu sonrisa.</h2>
         <div class="name">{doctor.name}</div>
         <div class="cred">{doctor.title} · Cédula profesional {licenseNumber}</div>
@@ -247,9 +248,9 @@ const faqs = [
   {cases.length > 0 && (
     <section class="cases" id="casos" aria-labelledby="casos-title">
       <div class="wrap">
-        <h2 id="casos-title">Cambios que se ven, no que se notan.</h2>
-        <p class="lead">Cada caso cuenta qué no le gustaba al paciente, qué se decidió hacer y por qué.</p>
-        <div class="grid">
+        <h2 id="casos-title" data-reveal>Cambios que se ven, no que se notan.</h2>
+        <p class="lead" data-reveal style="--d:120ms">Cada caso cuenta qué no le gustaba al paciente, qué se decidió hacer y por qué.</p>
+        <div class="grid" data-reveal-stagger>
           {cases.map((c) => (
             <div class="case">
               <div class="ba">
@@ -266,11 +267,11 @@ const faqs = [
 
   <section class="faq" id="preguntas" aria-labelledby="faq-title">
     <div class="wrap">
-      <div class="sticky">
+      <div class="sticky" data-reveal>
         <h2 id="faq-title">Lo que la gente pregunta antes de venir.</h2>
         <p class="lead">Si tu duda no está aquí, mándala por WhatsApp. Respondemos nosotros, no un bot.</p>
       </div>
-      <div>
+      <div data-reveal-stagger>
         {faqs.map((f) => (
           <details>
             <summary>{f.question}</summary>
@@ -282,16 +283,16 @@ const faqs = [
   </section>
 
   <section class="final" aria-labelledby="final-title">
-    <div class="wrap">
+    <div class="wrap" data-reveal-stagger>
       <h2 id="final-title">¿Qué podríamos hacer con tu sonrisa?</h2>
       <p class="lead">Mándanos una foto por WhatsApp y te decimos qué opciones tienes. Sin compromiso y sin que te vendamos algo que no necesitas.</p>
-      <a class="btn btn-turq wa-link" href={waFoto} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Mándanos tu sonrisa por WhatsApp</a>
+      <a class="btn btn-turq wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
     </div>
   </section>
 
   <section class="location" id="ubicacion" aria-labelledby="ubicacion-title">
     <div class="wrap">
-      <div>
+      <div data-reveal>
         <h2 id="ubicacion-title">Estamos en {b.address.city}.</h2>
         <address>
           {b.address.street}<br />
@@ -307,7 +308,7 @@ const faqs = [
         </div>
       </div>
       {b.mapsEmbedUrl && (
-        <div class="map">
+        <div class="map" data-reveal style="--d:150ms">
           <iframe src={b.mapsEmbedUrl} allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Mapa de la clínica"></iframe>
         </div>
       )}
@@ -334,6 +335,24 @@ const faqs = [
   .hero .facts span { display: inline-flex; align-items: center; gap: 8px; }
   .hero .facts i { width: 8px; height: 8px; border-radius: 50%; background: var(--turq); display: inline-block; }
 
+  /* motion: entrada del hero (sin observer, está arriba del pliegue) */
+  @keyframes fade-up { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  @keyframes pop-in { from { opacity: 0; transform: translateY(12px) scale(.94); } to { opacity: 1; transform: none; } }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade-in { to { opacity: .7; } }
+  .hero-copy > * { animation: fade-up .9s cubic-bezier(.2, .7, .2, 1) both; }
+  .hero-copy > :nth-child(2) { animation-delay: .12s; }
+  .hero-copy > :nth-child(3) { animation-delay: .24s; }
+  .hero-copy > :nth-child(4) { animation-delay: .36s; }
+  .screen { animation: fade-up 1s .3s cubic-bezier(.2, .7, .2, 1) both; }
+  .screen .tag { animation: pop-in .6s 1.5s cubic-bezier(.2, .7, .2, 1) both; }
+  .screen .guias { opacity: 0; animation: fade-in .8s .9s ease both; }
+  .screen .propuesta rect { stroke-dasharray: 220; stroke-dashoffset: 220; animation: draw 1.1s 1.1s ease-out both; }
+  @media (prefers-reduced-motion: reduce) {
+    .screen .guias { opacity: .7; }
+    .screen .propuesta rect { stroke-dashoffset: 0; }
+  }
+
   /* pantalla: diseño digital */
   .screen { position: relative; margin: 0 auto; width: min(100%, 520px); aspect-ratio: 1 / 1.08; align-self: end; }
   .screen .frame { position: absolute; inset: 0; border-radius: var(--r) var(--r) 0 0; background: #fff; border: 1px solid var(--line); border-bottom: 0; box-shadow: 0 30px 70px -30px rgba(34,26,94,.35); overflow: hidden; }
@@ -358,6 +377,9 @@ const faqs = [
   .identify ul { list-style: none; }
   .identify li { font-family: var(--serif); font-variation-settings: "SOFT" 100, "opsz" 40; font-size: clamp(1.25rem, 2vw, 1.6rem); line-height: 1.3; color: var(--indigo-ink); padding: 22px 0 22px 52px; border-bottom: 1px solid var(--line); position: relative; }
   .identify li:first-child { border-top: 1px solid var(--line); }
+  .identify li { transition: padding-left .25s ease; }
+  .identify li::before { transition: transform .25s ease; }
+  .identify li:hover::before { transform: scale(1.15); }
   .identify li::before { content: ""; position: absolute; left: 0; top: 30px; width: 24px; height: 24px; border-radius: 50%; background: var(--turq-mist); border: 2px solid var(--turq); }
   .identify li::after { content: ""; position: absolute; left: 8px; top: 37px; width: 8px; height: 8px; border-radius: 50%; background: var(--turq); }
   .identify .close { margin-top: 26px; font-size: 1.18rem; color: var(--ink-2); }
@@ -370,7 +392,10 @@ const faqs = [
   .different .head p + p { margin-top: 14px; }
   .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
   @media (max-width: 800px) { .pillars { grid-template-columns: 1fr; } }
-  .pillar { background: #fff; border-radius: var(--r); padding: 36px 32px 34px; border: 1px solid var(--line); }
+  .pillar { background: #fff; border-radius: var(--r); padding: 36px 32px 34px; border: 1px solid var(--line); transition: transform .3s ease, box-shadow .3s ease; }
+  .pillar:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -26px rgba(23, 18, 63, .35); }
+  .pillar .glyph { transition: transform .3s ease; }
+  .pillar:hover .glyph { transform: rotate(-6deg) scale(1.08); }
   .pillar .glyph { width: 54px; height: 54px; border-radius: 16px; background: var(--turq-mist); display: grid; place-items: center; margin-bottom: 26px; }
   .pillar .glyph svg { width: 28px; height: 28px; color: var(--turq-deep); }
   .pillar h3 { margin-bottom: 10px; }
@@ -382,14 +407,16 @@ const faqs = [
   .process h2 { color: #fff; }
   .process .lead { color: #B7B0E0; }
   .steps { list-style: none; counter-reset: s; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 64px; position: relative; }
-  .steps::before { content: ""; position: absolute; left: 0; right: 0; top: 22px; height: 2px; background: linear-gradient(90deg, var(--turq), rgba(62,184,195,.15)); }
+  .steps::before { content: ""; position: absolute; left: 0; right: 0; top: 22px; height: 2px; background: linear-gradient(90deg, var(--turq), rgba(62,184,195,.15)); transform: scaleX(0); transform-origin: left; transition: transform 1.4s cubic-bezier(.2, .7, .2, 1) .2s; }
+  .steps.is-visible::before, html:not(.js) .steps::before { transform: scaleX(1); }
   .steps li { counter-increment: s; padding: 0 28px 0 0; position: relative; }
   .steps li::before { content: counter(s); display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--indigo-ink); border: 2px solid var(--turq); color: var(--turq); font-family: var(--serif); font-size: 1.3rem; font-weight: 500; position: relative; z-index: 1; margin-bottom: 26px; }
   .steps h3 { color: #fff; font-size: 1.2rem; margin-bottom: 8px; }
   .steps p { color: #C5BFE6; font-size: .96rem; line-height: 1.55; }
   @media (max-width: 900px) {
     .steps { grid-template-columns: 1fr; gap: 0; margin-top: 48px; }
-    .steps::before { left: 22px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; background: linear-gradient(180deg, var(--turq), rgba(62,184,195,.15)); }
+    .steps::before { left: 22px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; background: linear-gradient(180deg, var(--turq), rgba(62,184,195,.15)); transform: scaleY(0); transform-origin: top; }
+    .steps.is-visible::before, html:not(.js) .steps::before { transform: scaleY(1); }
     .steps li { display: grid; grid-template-columns: 46px 1fr; gap: 20px; padding: 0 0 34px; }
     .steps li::before { margin: 0; grid-row: 1 / span 2; }
     .steps li :is(h3, p) { grid-column: 2; }
@@ -400,7 +427,8 @@ const faqs = [
   .services .layout { display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px; margin-top: 56px; }
   @media (max-width: 900px) { .services .layout { grid-template-columns: 1fr; } }
   .services .layout > *, .side > * { min-width: 0; }
-  .svc { border-radius: var(--r); padding: 40px; }
+  .svc { border-radius: var(--r); padding: 40px; transition: transform .3s ease, box-shadow .3s ease; }
+  .svc:hover { transform: translateY(-4px); box-shadow: 0 22px 44px -26px rgba(23, 18, 63, .35); }
   @media (max-width: 600px) { .svc { padding: 28px 24px; } }
   .svc.main { background: var(--indigo); color: #fff; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; }
   .svc.main h3 { color: #fff; font-size: 2rem; font-weight: 300; margin-bottom: 12px; }
@@ -413,6 +441,8 @@ const faqs = [
   .svc.light h3 { margin-bottom: 6px; }
   .svc.light p { color: var(--ink-2); font-size: .98rem; margin-bottom: 18px; }
   .svc.light ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .svc.light li { transition: background .2s, border-color .2s; }
+  .svc.light li:hover { background: var(--turq-mist); border-color: var(--turq-soft); }
   .svc.light li { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .95rem; font-weight: 600; color: var(--indigo-deep); }
   .services .close { margin-top: 40px; font-family: var(--serif); font-size: 1.4rem; color: var(--indigo-ink); }
 
@@ -435,7 +465,8 @@ const faqs = [
   /* cases */
   .cases .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
   @media (max-width: 800px) { .cases .grid { grid-template-columns: 1fr; } }
-  .case { border-radius: var(--r); overflow: hidden; background: var(--paper-2); border: 1px solid var(--line); }
+  .case { border-radius: var(--r); overflow: hidden; background: var(--paper-2); border: 1px solid var(--line); transition: transform .3s ease, box-shadow .3s ease; }
+  .case:hover { transform: translateY(-4px); box-shadow: 0 22px 44px -26px rgba(23, 18, 63, .35); }
   .case .ba { display: grid; grid-template-columns: 1fr 1fr; aspect-ratio: 4 / 3; }
   .case .ba img { width: 100%; height: 100%; object-fit: cover; }
   .case .txt { padding: 22px 24px 26px; }
@@ -454,6 +485,7 @@ const faqs = [
   summary::after { content: ""; position: absolute; right: 6px; top: 30px; width: 14px; height: 14px; border-right: 2px solid var(--turq); border-bottom: 2px solid var(--turq); transform: rotate(45deg); transition: transform .2s; }
   details[open] summary::after { transform: rotate(-135deg); top: 36px; }
   details p { padding: 0 0 26px; color: var(--ink-2); max-width: 56ch; }
+  details[open] p { animation: fade-up .4s cubic-bezier(.2, .7, .2, 1) both; }
 
   /* final */
   .final { background: var(--indigo); color: #fff; text-align: center; position: relative; overflow: hidden; }
