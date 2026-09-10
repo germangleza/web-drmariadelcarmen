@@ -35,7 +35,6 @@ const navLinks = [
 ];
 
 const waAgendar = whatsappUrl('Hola, quiero una valoración de mi sonrisa');
-const waFoto = whatsappUrl('Hola, te mando una foto de mi sonrisa para saber qué opciones tengo');
 ---
 <!doctype html>
 <html lang={SITE.lang}>
@@ -43,6 +42,7 @@ const waFoto = whatsappUrl('Hola, te mando una foto de mi sonrisa para saber qu�
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content={SITE.themeColor} />
+    <script is:inline>if ("IntersectionObserver" in window) document.documentElement.classList.add("js");</script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
@@ -128,8 +128,33 @@ const waFoto = whatsappUrl('Hola, te mando una foto de mi sonrisa para saber qu�
     </footer>
 
     <div class="sticky-wa">
-      <a class="btn wa-link" href={waFoto} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Mándanos tu sonrisa por WhatsApp</a>
+      <a class="btn wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
     </div>
+
+    <script is:inline>
+      // Motion: revela elementos al entrar en pantalla y sombrea el header al hacer scroll.
+      (function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (!e.isIntersecting) return;
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            });
+          }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+          document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+          document.querySelectorAll('[data-reveal-stagger]').forEach(function (el) {
+            if (!reduce) Array.prototype.forEach.call(el.children, function (c, i) { c.style.transitionDelay = Math.min(i * 90, 720) + 'ms'; });
+            io.observe(el);
+          });
+        }
+        var header = document.querySelector('.site-header');
+        var onScroll = function () { header.classList.toggle('is-scrolled', window.scrollY > 8); };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      })();
+    </script>
 
     {SITE.analytics.googleAdsConversion && (
       <script is:inline define:vars={{ sendTo: SITE.analytics.googleAdsConversion }}>

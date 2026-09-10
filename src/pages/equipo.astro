@@ -32,7 +32,7 @@ const schema = {
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <div class="page">
     <h1>Nuestro equipo</h1>
-    <div class="team-grid">
+    <div class="team-grid" data-reveal-stagger>
       {SITE.medicalTeam.map((m) => (
         <article class="team-card">
           {hasPhoto(m.photo)
