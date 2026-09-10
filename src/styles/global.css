@@ -62,6 +62,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .nav .brand img { height: 54px; width: auto; mix-blend-mode: multiply; }
 .nav .brand-text { font-family: var(--serif); font-size: 1.25rem; color: var(--indigo-ink); line-height: 1.15; }
 @media (min-width: 600px) { .nav .brand-text { white-space: nowrap; } }
+@media (max-width: 599px) { .nav .brand-text { font-size: 1rem; max-width: 11rem; } .nav .btn { padding: 10px 16px; } }
 .nav-links { display: none; gap: 30px; font-weight: 600; font-size: .97rem; list-style: none; }
 .nav-links a { color: var(--ink-2); text-decoration: none; white-space: nowrap; }
 .nav-links a:hover { color: var(--indigo); }
