@@ -9,7 +9,7 @@
 export const SITE = {
   // === Básicos ===
   name: 'Dra. María del Carmen Estética Dental',
-  url: 'https://ejemplo.com',                // TODO: dominio final SIN slash al final
+  url: 'https://dramariadelcarmen.com',      // Dominio final SIN slash al final
   title: 'Estética Dental en Tuxtla Gutiérrez | Dra. María del Carmen Juárez',
   description:
     'Carillas, resinas y diseño de sonrisa con el mínimo desgaste de tu diente. Ves el resultado en pantalla antes de empezar. Lunes a sábado en Col. Penipak, Tuxtla.',
