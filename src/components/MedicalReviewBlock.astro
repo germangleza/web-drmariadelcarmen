@@ -1,0 +1,58 @@
+---
+/**
+ * Bloque visible de "Revisado médicamente por..." con credenciales.
+ * Señal E-E-A-T visible para usuarios Y para Google. Se muestra al inicio del post.
+ */
+import { getTeamMember } from '../config/site.config';
+import { SITE } from '../config/site.config';
+
+interface Props {
+  authorId?: string;
+  reviewedById?: string;
+  reviewDate?: Date;
+}
+const { authorId, reviewedById, reviewDate } = Astro.props;
+const author = authorId ? getTeamMember(authorId) : undefined;
+const reviewer = reviewedById ? getTeamMember(reviewedById) : undefined;
+const fmt = (d: Date) => d.toLocaleDateString(SITE.lang, { year: 'numeric', month: 'long', day: 'numeric' });
+---
+{(author || reviewer) && (
+  <aside class="medical-review" aria-label="Información de autoría médica">
+    {author && (
+      <div class="review-row">
+        <img src={author.photo} alt={author.name} width="48" height="48" loading="lazy" />
+        <div>
+          <p class="review-name">Escrito por <strong>{author.name}</strong></p>
+          <p class="review-creds">{author.title} · {author.license}</p>
+        </div>
+      </div>
+    )}
+    {reviewer && reviewer.id !== author?.id && (
+      <div class="review-row">
+        <img src={reviewer.photo} alt={reviewer.name} width="48" height="48" loading="lazy" />
+        <div>
+          <p class="review-name">Revisado médicamente por <strong>{reviewer.name}</strong></p>
+          <p class="review-creds">
+            {reviewer.title} · {reviewer.license}
+            {reviewDate && <> · Última revisión: {fmt(reviewDate)}</>}
+          </p>
+        </div>
+      </div>
+    )}
+  </aside>
+)}
+<style>
+  .medical-review {
+    border: 1px solid #d1e7ea;
+    background: #f2fafb;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .review-row { display: flex; gap: 0.75rem; align-items: center; }
+  .review-row img { border-radius: 50%; object-fit: cover; background: #ddd; }
+  .review-name { margin: 0; font-size: 0.95rem; }
+  .review-creds { margin: 0; font-size: 0.82rem; color: #555; }
+</style>

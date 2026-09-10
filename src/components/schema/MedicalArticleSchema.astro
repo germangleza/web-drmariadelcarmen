@@ -1,0 +1,55 @@
+---
+/**
+ * JSON-LD para artículos de salud: MedicalWebPage + BlogPosting con reviewedBy.
+ * El campo "reviewedBy" con credenciales es LA señal E-E-A-T más importante
+ * para contenido médico en Google.
+ */
+import { SITE, getTeamMember } from '../../config/site.config';
+
+interface Props {
+  title: string;
+  description: string;
+  publishedTime: string;
+  modifiedTime?: string;
+  authorId?: string;       // id del medicalTeam
+  reviewedById?: string;   // id del medicalTeam que revisó
+  reviewDate?: string;
+  image?: string;
+}
+const { title, description, publishedTime, modifiedTime, authorId, reviewedById, reviewDate, image = SITE.ogImage } = Astro.props;
+
+const author = authorId ? getTeamMember(authorId) : undefined;
+const reviewer = reviewedById ? getTeamMember(reviewedById) : undefined;
+
+const personSchema = (m: NonNullable<typeof author>) => ({
+  '@type': 'Person',
+  name: m.name,
+  jobTitle: m.title,
+  identifier: m.license,
+  sameAs: m.sameAs,
+});
+
+const schema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  headline: title,
+  description,
+  image: new URL(image, SITE.url).href,
+  datePublished: publishedTime,
+  dateModified: modifiedTime ?? publishedTime,
+  inLanguage: SITE.lang,
+  author: author ? personSchema(author) : { '@type': 'Organization', name: SITE.name },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    logo: { '@type': 'ImageObject', url: new URL(SITE.logo, SITE.url).href },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url.href },
+};
+
+if (reviewer) {
+  schema.reviewedBy = personSchema(reviewer);
+  if (reviewDate) schema.lastReviewed = reviewDate;
+}
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

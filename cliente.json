@@ -1,0 +1,8 @@
+{
+  "nombre": "NOMBRE_DEL_CLIENTE",
+  "vertical": "salud",
+  "dominio": "ejemplo.com",
+  "estatus": "en-desarrollo",
+  "inicio": "2026-01-01",
+  "tipo": "sitio-astro"
+}

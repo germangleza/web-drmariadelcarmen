@@ -1,0 +1,93 @@
+---
+/**
+ * Layout de posts médicos: MedicalWebPage schema + bloque de revisión médica
+ * + fuentes citadas + disclaimer. Todo automático desde el frontmatter.
+ */
+import BaseLayout from './BaseLayout.astro';
+import MedicalArticleSchema from '../components/schema/MedicalArticleSchema.astro';
+import BreadcrumbSchema from '../components/schema/BreadcrumbSchema.astro';
+import MedicalReviewBlock from '../components/MedicalReviewBlock.astro';
+import { SITE, getTeamMember } from '../config/site.config';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  authorId?: string;
+  reviewedBy: string;
+  reviewDate: Date;
+  image?: string;
+  tags?: string[];
+  sources?: { title: string; url: string }[];
+}
+const { title, description, pubDate, updatedDate, authorId, reviewedBy, reviewDate, image, tags = [], sources = [] } = Astro.props;
+const authorName = (authorId && getTeamMember(authorId)?.name) ?? SITE.blog.defaultAuthor;
+const fmt = (d: Date) => d.toLocaleDateString(SITE.lang, { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  type="article"
+  publishedTime={pubDate.toISOString()}
+  modifiedTime={updatedDate?.toISOString()}
+  author={authorName}
+>
+  <MedicalArticleSchema
+    title={title}
+    description={description}
+    publishedTime={pubDate.toISOString()}
+    modifiedTime={updatedDate?.toISOString()}
+    authorId={authorId}
+    reviewedById={reviewedBy}
+    reviewDate={reviewDate.toISOString()}
+    image={image}
+  />
+  <BreadcrumbSchema items={[{ name: SITE.blog.title, url: '/blog' }, { name: title, url: Astro.url.pathname }]} />
+
+  <article class="post">
+    <header>
+      <h1>{title}</h1>
+      <p class="meta">
+        <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
+        {updatedDate && <> · Actualizado: <time datetime={updatedDate.toISOString()}>{fmt(updatedDate)}</time></>}
+      </p>
+      <MedicalReviewBlock authorId={authorId} reviewedById={reviewedBy} reviewDate={reviewDate} />
+      {tags.length > 0 && (
+        <ul class="tags">
+          {tags.map((t) => <li><a href={`/blog/tag/${t}`}>#{t}</a></li>)}
+        </ul>
+      )}
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    {sources.length > 0 && (
+      <section class="sources" aria-labelledby="sources-title">
+        <h2 id="sources-title">Fuentes</h2>
+        <ol>
+          {sources.map((s) => (
+            <li><a href={s.url} rel="noopener" target="_blank">{s.title}</a></li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    <aside class="disclaimer">
+      <p>{SITE.blog.disclaimer}</p>
+    </aside>
+  </article>
+</BaseLayout>
+<style>
+  .sources { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #eee; }
+  .sources ol { font-size: 0.9rem; }
+  .disclaimer {
+    margin-top: 2rem; padding: 0.9rem 1.1rem;
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+    font-size: 0.88rem; color: #555;
+  }
+  .disclaimer p { margin: 0; }
+</style>
