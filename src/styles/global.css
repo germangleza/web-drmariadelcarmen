@@ -1,33 +1,102 @@
-/* Reset y base mínima. Sustituye o extiende con tu sistema de diseño por proyecto. */
-*, *::before, *::after { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
-  color: #1a1a1a;
+/* Sistema de diseño del sitio: tokens, tipografía, botones, header y footer.
+   Los estilos específicos de cada página viven en su propio <style>. */
+:root {
+  --indigo: #3B2A8E; --indigo-deep: #221A5E; --indigo-ink: #17123F;
+  --turq: #3EB8C3; --turq-deep: #1E8F9A; --turq-mist: #EAF7F8; --turq-soft: #CFEDEF;
+  --ink: #1F1B3B; --ink-2: #5B5872; --ink-3: #8A879E;
+  --paper: #FFFFFF; --paper-2: #F6F5FB; --line: #E6E4F0;
+  --wa: #25D366;
+  --w: 1160px; --r: 28px;
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Nunito Sans", system-ui, sans-serif;
 }
-img { max-width: 100%; height: auto; }
-
-.site-header nav {
-  display: flex; align-items: center; justify-content: space-between;
-  max-width: 72rem; margin: 0 auto; padding: 1rem 1.5rem;
-}
-.site-header ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
-.site-header a { text-decoration: none; color: inherit; }
-.brand { font-weight: 700; }
-
-main { max-width: 72rem; margin: 0 auto; padding: 1.5rem; min-height: 60vh; }
-
-.post { max-width: 44rem; margin: 0 auto; }
-.post .meta { color: #666; font-size: 0.9rem; }
-.tags { display: flex; gap: 0.5rem; list-style: none; padding: 0; flex-wrap: wrap; }
-.tags a { font-size: 0.85rem; color: #444; }
-.prose :is(h2, h3) { margin-top: 2rem; }
-
-.site-footer { border-top: 1px solid #eee; margin-top: 3rem; }
-.site-footer p { max-width: 72rem; margin: 0 auto; padding: 1.5rem; color: #666; font-size: 0.9rem; }
-
-:focus-visible { outline: 2px solid #0f172a; outline-offset: 2px; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+body {
+  font-family: var(--sans); font-size: 17.5px; line-height: 1.6;
+  color: var(--ink); background: var(--paper); -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; }
+h1, h2, h3, .serif {
+  font-family: var(--serif); font-variation-settings: "SOFT" 100, "opsz" 144;
+  font-weight: 400; letter-spacing: -.015em; line-height: 1.05; color: var(--indigo-ink);
+}
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 300; }
+h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 300; }
+h3 { font-size: 1.45rem; font-weight: 500; line-height: 1.2; }
+p { max-width: 60ch; }
+.lead { font-size: 1.18rem; color: var(--ink-2); line-height: 1.6; }
+a { color: var(--indigo); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--turq); outline-offset: 4px; border-radius: 6px;
+}
+.wrap { max-width: var(--w); margin: 0 auto; padding: 0 28px; }
+
+/* Botones */
+.btn {
+  display: inline-flex; align-items: center; gap: 12px; padding: 18px 30px; border-radius: 999px;
+  font-weight: 700; font-size: 1.05rem; text-decoration: none; border: 2px solid transparent;
+  transition: transform .12s, background .15s, box-shadow .15s; white-space: nowrap;
+}
+.btn:active { transform: scale(.98); }
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn-primary { background: var(--indigo); color: #fff; box-shadow: 0 10px 30px -12px rgba(59,42,142,.6); }
+.btn-primary:hover { background: var(--indigo-deep); box-shadow: 0 14px 34px -12px rgba(59,42,142,.7); }
+.btn-ghost { background: transparent; color: var(--indigo); border-color: #CFC9EA; }
+.btn-ghost:hover { background: var(--paper-2); border-color: var(--indigo); }
+.btn-turq { background: var(--turq); color: var(--indigo-ink); }
+.btn-turq:hover { background: #5CC6CF; }
+@media (max-width: 480px) { .btn { white-space: normal; text-align: center; justify-content: center; width: 100%; } }
+
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.86);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; height: 82px; gap: 16px; }
+.nav .brand { display: inline-flex; align-items: center; text-decoration: none; }
+.nav .brand img { height: 54px; width: auto; mix-blend-mode: multiply; }
+.nav .brand-text { font-family: var(--serif); font-size: 1.25rem; color: var(--indigo-ink); line-height: 1.15; }
+@media (min-width: 600px) { .nav .brand-text { white-space: nowrap; } }
+.nav-links { display: none; gap: 30px; font-weight: 600; font-size: .97rem; list-style: none; }
+.nav-links a { color: var(--ink-2); text-decoration: none; white-space: nowrap; }
+.nav-links a:hover { color: var(--indigo); }
+@media (min-width: 900px) { .nav-links { display: flex; } }
+.nav .btn { padding: 12px 22px; font-size: .95rem; }
+.nav .cta-text { display: none; } .nav .cta-short { display: inline; }
+@media (min-width: 600px) { .nav .cta-text { display: inline; } .nav .cta-short { display: none; } }
+
+/* Páginas interiores (blog, equipo, 404) */
+.page { max-width: var(--w); margin: 0 auto; padding: 56px 28px 96px; }
+.page h1 { margin-bottom: .6em; }
+.page h2 { margin: 1.6em 0 .5em; }
+.page p + p { margin-top: 1em; }
+.post { max-width: 44rem; margin: 0 auto; }
+.post .meta { color: var(--ink-2); font-size: .9rem; margin: .5rem 0 1rem; }
+.tags { display: flex; gap: .5rem; list-style: none; flex-wrap: wrap; margin: 1rem 0; }
+.tags a { font-size: .85rem; color: var(--ink-2); }
+.prose { margin-top: 1.5rem; }
+.prose :is(h2, h3) { margin: 2rem 0 .75rem; }
+.prose p, .prose ul, .prose ol, .prose blockquote { margin-bottom: 1.2em; }
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose a { text-decoration: underline; }
+
+/* Footer */
+.site-footer { background: var(--indigo-ink); color: #B7B0E0; padding: 56px 0 120px; font-size: .93rem; }
+.site-footer .wrap { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 36px; }
+@media (max-width: 800px) { .site-footer .wrap { grid-template-columns: 1fr; } }
+.site-footer .brand { font-family: var(--serif); font-size: 1.5rem; color: #fff; margin-bottom: 12px; }
+.site-footer a { color: #fff; text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.site-footer ul { list-style: none; display: grid; gap: 8px; }
+.site-footer .reg { color: #9088C7; margin-top: 8px; line-height: 1.5; }
+.site-footer .copy { color: #9088C7; margin-top: 18px; font-size: .85rem; }
+
+/* WhatsApp fijo en móvil */
+.sticky-wa { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 30; display: none; }
+.sticky-wa .btn { width: 100%; justify-content: center; background: var(--wa); color: #fff; box-shadow: 0 10px 28px rgba(0,0,0,.2); }
+@media (max-width: 720px) { .sticky-wa { display: block; } }

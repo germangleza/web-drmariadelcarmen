@@ -46,6 +46,7 @@ const fmt = (d: Date) => d.toLocaleDateString(SITE.lang, { year: 'numeric', mont
   />
   <BreadcrumbSchema items={[{ name: SITE.blog.title, url: '/blog' }, { name: title, url: Astro.url.pathname }]} />
 
+  <div class="page">
   <article class="post">
     <header>
       <h1>{title}</h1>
@@ -80,9 +81,11 @@ const fmt = (d: Date) => d.toLocaleDateString(SITE.lang, { year: 'numeric', mont
       <p>{SITE.blog.disclaimer}</p>
     </aside>
   </article>
+  </div>
 </BaseLayout>
 <style>
-  .sources { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #eee; }
+  .sources { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .sources ol { padding-left: 1.4em; }
   .sources ol { font-size: 0.9rem; }
   .disclaimer {
     margin-top: 2rem; padding: 0.9rem 1.1rem;

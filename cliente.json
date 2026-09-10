@@ -1,8 +1,8 @@
 {
-  "nombre": "NOMBRE_DEL_CLIENTE",
+  "nombre": "Dra. María del Carmen Estética Dental",
   "vertical": "salud",
-  "dominio": "ejemplo.com",
+  "dominio": "PENDIENTE",
   "estatus": "en-desarrollo",
-  "inicio": "2026-01-01",
+  "inicio": "2026-09-10",
   "tipo": "sitio-astro"
 }

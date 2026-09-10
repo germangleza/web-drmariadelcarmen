@@ -1,56 +1,475 @@
 ---
+/**
+ * Página de inicio: landing de estética dental conservadora.
+ * Los datos del negocio y de la doctora salen de site.config.ts; aquí solo vive el copy.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FAQSchema from '../components/schema/FAQSchema.astro';
-import { SITE } from '../config/site.config';
+import { SITE, whatsappUrl } from '../config/site.config';
+import { formatOpeningHours } from '../utils/hours';
 
-// FAQs de pacientes: edítalas por proyecto. Rankean en Google y alimentan a los LLMs (GEO).
+const b = SITE.business;
+const doctor = SITE.medicalTeam[0];
+const specialists = SITE.medicalTeam.slice(1);
+const hasPortrait = fs.existsSync(path.join(process.cwd(), 'public', doctor.photo));
+const licenseNumber = doctor.license.replace(/^Céd\.\s*Prof\.\s*/i, '');
+const hours = formatOpeningHours(b.openingHours);
+
+const waFoto = whatsappUrl('Hola, te mando una foto de mi sonrisa para saber qué opciones tengo');
+const waEmpezar = whatsappUrl('Hola, quiero empezar con una valoración');
+
+const painPoints = [
+  'Evitas sonreír mostrando los dientes.',
+  'Tus dientes están alineados, pero no te gusta su forma o tamaño.',
+  'Uno se ve más oscuro que los demás.',
+  'Te incomodan los espacios entre tus dientes.',
+  'Se ven amarillos aunque te cepilles bien.',
+  'Quieres mejorar tu sonrisa, pero te da miedo que se vea falsa.',
+];
+
+const pillars = [
+  { icon: 'i-leaf', title: 'Menos desgaste', text: 'Tratamos de conservar la mayor parte de tu diente natural. Menos invasivo hoy es más salud mañana.' },
+  { icon: 'i-screen', title: 'Lo ves antes de hacerlo', text: 'Fotografías, escaneo y diseño digital. Decides con el resultado en pantalla, no con una promesa.' },
+  { icon: 'i-face', title: 'Se ve como tú', text: 'Forma, color y tamaño pensados para tu cara. Nadie va a notar qué te hiciste, solo que te ves mejor.' },
+];
+
+const steps = [
+  { title: 'Valoración con la doctora', text: 'Revisa tu boca, escucha qué te gustaría cambiar y toma fotografías. Si tu caso necesita un especialista, te lo dice ahí mismo. Sin compromiso.' },
+  { title: 'Diseño digital', text: 'Escaneamos tus dientes y diseñamos tu sonrisa en pantalla. Aquí ves cómo quedaría.' },
+  { title: 'Prueba de sonrisa', text: 'Te la probamos en la boca antes de tocar un solo diente. Si algo no te convence, se ajusta.' },
+  { title: 'Tratamiento', text: 'Se hace solo lo necesario, con el menor desgaste posible.' },
+  { title: 'Seguimiento', text: 'Te acompañamos después para que el resultado dure.' },
+];
+
+const services = {
+  main: { title: 'Estética dental', text: 'Lo que la doctora trabaja directamente. Siempre con la opción menos invasiva primero.', items: ['Carillas', 'Resinas estéticas', 'Aclaramiento', 'Diseño de sonrisa'] },
+  side: [
+    { title: 'Salud y base', text: 'Con especialistas del equipo, en la misma clínica.', items: ['Limpieza', 'Ortodoncia', 'Endodoncia', 'Implantes', 'Cirugía'] },
+    { title: 'Toda la familia', text: 'Para que todos se atiendan en el mismo lugar.', items: ['Odontopediatría', 'Consulta general'] },
+  ],
+};
+
+/**
+ * Casos antes/después. Se muestran solo cuando hay casos reales.
+ * Ejemplo: { title: 'Espacios entre dientes', text: 'Qué no le gustaba · Qué se hizo · Por qué.', before: '/casos/caso1-antes.jpg', after: '/casos/caso1-despues.jpg' }
+ */
+const cases: { title: string; text: string; before: string; after: string }[] = [];
+
+// FAQs de pacientes: rankean en Google y alimentan a los LLMs (GEO).
 const faqs = [
-  { question: '¿Aceptan pacientes nuevos?', answer: SITE.business.acceptingNewPatients ? 'Sí, aceptamos pacientes nuevos. Agenda tu cita por teléfono o correo.' : 'Por el momento no aceptamos pacientes nuevos.' },
-  { question: '¿Dónde están ubicados?', answer: `Estamos en ${SITE.business.address.street}, ${SITE.business.address.city}.` },
-  { question: '¿Cuáles son sus horarios?', answer: 'Lunes a viernes de 9:00 a 19:00 y sábados de 9:00 a 14:00.' },
+  { question: '¿Todos necesitan carillas?', answer: 'No. Muchas veces un aclaramiento, una resina o una ortodoncia corta resuelve lo que no te gusta. Por eso valoramos antes de proponer.' },
+  { question: '¿Duele?', answer: 'La mayoría de los tratamientos estéticos se hacen con anestesia local y el paciente reporta poca o ninguna molestia. En la valoración te decimos qué esperar en tu caso.' },
+  { question: '¿Se van a ver falsos?', answer: 'Ese es justo el resultado que evitamos. Diseñamos forma, color y tamaño para tu cara, y lo ves en pantalla antes de decidir.' },
+  { question: '¿Cuánto duran las carillas?', answer: 'Depende del material y del cuidado. Las de porcelana suelen durar más que las de resina. Te explicamos las diferencias en la valoración para que elijas con información.' },
+  { question: '¿Cuánto cuesta?', answer: 'Cada sonrisa es distinta y el precio depende de qué necesita la tuya. En la valoración recibes un plan claro con costos antes de decidir nada.' },
+  { question: '¿Puedo pagar en partes?', answer: 'Sí, tenemos opciones de financiamiento. En tu valoración te explicamos cuáles aplican a tu tratamiento.' },
 ];
 ---
 <BaseLayout>
   <FAQSchema faqs={faqs} />
 
   <section class="hero">
-    <h1>{SITE.name}</h1>
-    <p>{SITE.description}</p>
-    <p><a class="cta" href={`tel:${SITE.business.phone.replace(/\s/g, '')}`}>Agendar cita: {SITE.business.phone}</a></p>
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1>Tu sonrisa,<br /><em>pero mejor.</em></h1>
+        <p class="lead">Estética dental conservadora en {b.address.city}. Mejoramos tu sonrisa desgastando lo menos posible tu diente, y lo ves en pantalla antes de empezar.</p>
+        <div class="actions">
+          <a class="btn btn-primary wa-link" href={waFoto} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Mándanos una foto de tu sonrisa</a>
+          <a class="btn btn-ghost" href="#proceso">Ver cómo sería mi proceso</a>
+        </div>
+        <div class="facts">
+          <span><i></i>Valoración sin compromiso</span>
+          <span><i></i>Lunes a sábado</span>
+          <span><i></i>{b.address.neighborhood}, {b.address.city}</span>
+        </div>
+      </div>
+
+      <div class="screen" role="img" aria-label="Ilustración: diseño digital de sonrisa en pantalla">
+        <div class="frame">
+          <div class="bar"><i></i><i></i><i></i><b>Diseño digital de sonrisa</b></div>
+          <svg viewBox="0 0 520 520" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3F1FA"/><stop offset="1" stop-color="#EAF7F8"/></linearGradient>
+              <linearGradient id="tooth" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9EEF5"/></linearGradient>
+            </defs>
+            <rect width="520" height="520" fill="url(#g1)"/>
+            <!-- guías -->
+            <g stroke="#3EB8C3" stroke-width="1.2" stroke-dasharray="5 6" opacity=".7">
+              <line x1="260" y1="40" x2="260" y2="480"/>
+              <line x1="60" y1="230" x2="460" y2="230"/>
+              <path d="M90 300 C170 380 350 380 430 300" fill="none"/>
+            </g>
+            <!-- labios -->
+            <path d="M80 262 C150 226 370 226 440 262 C400 356 120 356 80 262 Z" fill="#F2D9DA" stroke="#E4BFC2" stroke-width="1.5"/>
+            <!-- dientes -->
+            <g fill="url(#tooth)" stroke="#CBD2DE" stroke-width="1.4">
+              <rect x="222" y="252" width="36" height="60" rx="11"/>
+              <rect x="262" y="252" width="36" height="60" rx="11"/>
+              <rect x="188" y="255" width="30" height="50" rx="10"/>
+              <rect x="302" y="255" width="30" height="50" rx="10"/>
+              <rect x="158" y="258" width="26" height="42" rx="9"/>
+              <rect x="336" y="258" width="26" height="42" rx="9"/>
+              <rect x="132" y="261" width="22" height="34" rx="8"/>
+              <rect x="366" y="261" width="22" height="34" rx="8"/>
+            </g>
+            <!-- propuesta (overlay turquesa) -->
+            <g fill="none" stroke="#3EB8C3" stroke-width="2">
+              <rect x="221" y="249" width="38" height="66" rx="12"/>
+              <rect x="261" y="249" width="38" height="66" rx="12"/>
+              <rect x="186" y="253" width="33" height="56" rx="11"/>
+              <rect x="301" y="253" width="33" height="56" rx="11"/>
+            </g>
+            <!-- etiquetas -->
+            <g font-family="Nunito Sans, sans-serif" font-size="12" fill="#5B5872">
+              <text x="72" y="222">línea de sonrisa</text>
+              <text x="268" y="58">línea media</text>
+              <text x="330" y="470" fill="#1E8F9A" font-weight="700">propuesta</text>
+              <line x1="326" y1="464" x2="300" y2="318" stroke="#3EB8C3" stroke-width="1.2"/>
+            </g>
+            <!-- cotas -->
+            <g stroke="#9088C7" stroke-width="1" fill="#9088C7" font-family="Nunito Sans, sans-serif" font-size="11">
+              <line x1="221" y1="336" x2="299" y2="336"/><line x1="221" y1="331" x2="221" y2="341"/><line x1="299" y1="331" x2="299" y2="341"/>
+              <text x="238" y="352">ancho 1:1.6</text>
+            </g>
+          </svg>
+        </div>
+        <div class="tag">Así lo ves antes de tocar un solo diente<small>Diseño digital y prueba de sonrisa</small></div>
+      </div>
+    </div>
   </section>
 
-  <section aria-labelledby="ubicacion-title">
-    <h2 id="ubicacion-title">Ubicación y horarios</h2>
-    <address>
-      {SITE.business.address.street}<br />
-      {SITE.business.address.city}, {SITE.business.address.state} {SITE.business.address.zip}
-    </address>
-    <ul>
-      {SITE.business.openingHours.map((h) => <li>{h.replace('Mo-Fr', 'Lun-Vie').replace('Sa', 'Sáb')}</li>)}
-    </ul>
+  <div class="strip">
+    <div class="wrap">
+      <span><svg><use href="#i-check"/></svg>Céd. Prof. {licenseNumber}</span>
+      {b.cofepris && <span><svg><use href="#i-check"/></svg>COFEPRIS {b.cofepris}</span>}
+      <span><svg><use href="#i-check"/></svg>Especialistas en la misma clínica</span>
+      <span><svg><use href="#i-check"/></svg>Opciones de financiamiento</span>
+    </div>
+  </div>
+
+  <section class="identify" aria-labelledby="identify-title">
+    <div class="wrap">
+      <div class="sticky">
+        <h2 id="identify-title">¿Te pasa algo de esto?</h2>
+        <p class="close"><strong>Nada de esto es vanidad.</strong> Es que algo de tu sonrisa no te representa. Y casi siempre tiene una solución más sencilla de lo que imaginas.</p>
+      </div>
+      <ul>
+        {painPoints.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
   </section>
 
-  <section id="faq" aria-labelledby="faq-title">
-    <h2 id="faq-title">Preguntas frecuentes</h2>
-    {faqs.map((f) => (
-      <details>
-        <summary>{f.question}</summary>
-        <p>{f.answer}</p>
-      </details>
-    ))}
+  <section class="different" aria-labelledby="different-title">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="different-title">Conservar antes que cubrir.</h2>
+        <div>
+          <p class="lead">En muchas clínicas la respuesta a todo es una carilla. Aquí no. Antes de proponer cualquier tratamiento revisamos si un aclaramiento, una resina o una corrección pequeña resuelve lo que no te gusta.</p>
+          <p class="lead">Cuando sí se necesita una carilla, se hace con el mínimo desgaste del diente. El objetivo no es darte una sonrisa nueva: es mejorar la tuya.</p>
+        </div>
+      </div>
+      <div class="pillars">
+        {pillars.map((p) => (
+          <div class="pillar">
+            <div class="glyph"><svg><use href={`#${p.icon}`}/></svg></div>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
 
-  <section id="contacto" aria-labelledby="contacto-title">
-    <h2 id="contacto-title">Contacto</h2>
-    <p>
-      <a href={`mailto:${SITE.business.email}`}>{SITE.business.email}</a> ·
-      <a href={`tel:${SITE.business.phone.replace(/\s/g, '')}`}>{SITE.business.phone}</a>
-    </p>
+  <section class="process" id="proceso" aria-labelledby="proceso-title">
+    <div class="wrap">
+      <h2 id="proceso-title">Así renovamos tu sonrisa contigo.</h2>
+      <p class="lead">Cinco pasos, sin sorpresas. Tú decides en cada uno.</p>
+      <ol class="steps">
+        {steps.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
+      </ol>
+      <a class="btn btn-turq wa-link" href={waEmpezar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Quiero empezar con una valoración</a>
+    </div>
+  </section>
+
+  <section class="services" id="servicios" aria-labelledby="servicios-title">
+    <div class="wrap">
+      <h2 id="servicios-title">Estética que empieza por una boca sana.</h2>
+      <p class="lead">Una carilla sobre un diente enfermo no dura. Por eso en la clínica hay especialistas para toda la boca: la doctora diagnostica y, según tu caso, lo trabaja ella o te canaliza con el especialista adecuado del equipo.</p>
+      <div class="layout">
+        <div class="svc main">
+          <div>
+            <h3>{services.main.title}</h3>
+            <p>{services.main.text}</p>
+          </div>
+          <ul>{services.main.items.map((i) => <li>{i}</li>)}</ul>
+        </div>
+        <div class="side">
+          {services.side.map((s) => (
+            <div class="svc light">
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+              <ul>{s.items.map((i) => <li>{i}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p class="close">¿No sabes qué necesitas? Para eso está la valoración.</p>
+    </div>
+  </section>
+
+  <section class="doctor" id="doctora" aria-labelledby="doctora-title">
+    <div class="wrap">
+      {hasPortrait
+        ? <div class="portrait"><img src={doctor.photo} alt={`Retrato de la ${doctor.name}`} width="480" height="600" loading="lazy" /></div>
+        : <div class="portrait" role="img" aria-label={`Retrato de la ${doctor.name}`}></div>}
+      <div>
+        <h2 id="doctora-title">Quién va a trabajar en tu sonrisa.</h2>
+        <div class="name">{doctor.name}</div>
+        <div class="cred">{doctor.title} · Cédula profesional {licenseNumber}</div>
+        <p>Ella hace tu valoración y tu diagnóstico. Si tu caso es estético, lo trabaja ella. Si necesitas un especialista (ortodoncia, endodoncia, implantes, cirugía o atención infantil), te canaliza con uno de los doctores de su equipo, aquí mismo, sin que tengas que ir a otra clínica ni empezar de cero.</p>
+        <blockquote>Una buena sonrisa es la que no se nota. Y cada decisión se explica en palabras simples antes de tomarla.</blockquote>
+        {specialists.length > 0 && (
+          <ul class="team" aria-label="Especialistas del equipo">
+            {specialists.map((m) => (
+              <li>
+                <img src={m.photo} alt={m.name} width="56" height="56" loading="lazy" />
+                <div><strong>{m.name}</strong><span>{m.title}</span></div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {cases.length > 0 && (
+    <section class="cases" id="casos" aria-labelledby="casos-title">
+      <div class="wrap">
+        <h2 id="casos-title">Cambios que se ven, no que se notan.</h2>
+        <p class="lead">Cada caso cuenta qué no le gustaba al paciente, qué se decidió hacer y por qué.</p>
+        <div class="grid">
+          {cases.map((c) => (
+            <div class="case">
+              <div class="ba">
+                <img src={c.before} alt={`Antes: ${c.title}`} loading="lazy" />
+                <img src={c.after} alt={`Después: ${c.title}`} loading="lazy" />
+              </div>
+              <div class="txt"><h3>{c.title}</h3><p>{c.text}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="faq" id="preguntas" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="sticky">
+        <h2 id="faq-title">Lo que la gente pregunta antes de venir.</h2>
+        <p class="lead">Si tu duda no está aquí, mándala por WhatsApp. Respondemos nosotros, no un bot.</p>
+      </div>
+      <div>
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.question}</summary>
+            <p>{f.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="final" aria-labelledby="final-title">
+    <div class="wrap">
+      <h2 id="final-title">¿Qué podríamos hacer con tu sonrisa?</h2>
+      <p class="lead">Mándanos una foto por WhatsApp y te decimos qué opciones tienes. Sin compromiso y sin que te vendamos algo que no necesitas.</p>
+      <a class="btn btn-turq wa-link" href={waFoto} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Mándanos tu sonrisa por WhatsApp</a>
+    </div>
+  </section>
+
+  <section class="location" id="ubicacion" aria-labelledby="ubicacion-title">
+    <div class="wrap">
+      <div>
+        <h2 id="ubicacion-title">Estamos en {b.address.city}.</h2>
+        <address>
+          {b.address.street}<br />
+          {b.address.neighborhood}, {b.address.city}, {b.address.state} {b.address.zip}
+        </address>
+        <h3>Horario</h3>
+        <ul class="hours">
+          {hours.map((h) => <li><span>{h.days}</span><span>{h.hours}</span></li>)}
+        </ul>
+        <div class="actions">
+          {b.mapsUrl && <a class="btn btn-ghost" href={b.mapsUrl} target="_blank" rel="noopener">Cómo llegar</a>}
+          <a class="btn btn-primary wa-link" href={whatsappUrl()} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a>
+        </div>
+      </div>
+      {b.mapsEmbedUrl && (
+        <div class="map">
+          <iframe src={b.mapsEmbedUrl} allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Mapa de la clínica"></iframe>
+        </div>
+      )}
+    </div>
   </section>
 </BaseLayout>
+
 <style>
-  .cta {
-    display: inline-block; background: #0e7490; color: #fff;
-    padding: 0.7rem 1.4rem; border-radius: 8px; text-decoration: none; font-weight: 600;
+  h1 { font-size: clamp(3rem, 7.2vw, 5.6rem); font-weight: 300; line-height: .98; }
+  h1 em { font-style: italic; font-weight: 300; color: var(--indigo); }
+  h2 { font-size: clamp(2.1rem, 4.2vw, 3.3rem); font-weight: 300; margin-bottom: .5em; max-width: 16ch; }
+  section { padding: 112px 0; }
+  @media (max-width: 720px) { section { padding: 72px 0; } }
+
+  /* hero */
+  .hero { padding: 56px 0 0; background: linear-gradient(180deg, #fff 0%, var(--turq-mist) 100%); position: relative; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: end; padding-bottom: 0; }
+  @media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; gap: 40px; } }
+  .hero-copy { padding-bottom: 96px; }
+  @media (max-width: 900px) { .hero-copy { padding-bottom: 0; } }
+  .hero .lead { margin: 28px 0 38px; max-width: 46ch; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .hero .facts { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 34px; color: var(--ink-2); font-size: .95rem; }
+  .hero .facts span { display: inline-flex; align-items: center; gap: 8px; }
+  .hero .facts i { width: 8px; height: 8px; border-radius: 50%; background: var(--turq); display: inline-block; }
+
+  /* pantalla: diseño digital */
+  .screen { position: relative; margin: 0 auto; width: min(100%, 520px); aspect-ratio: 1 / 1.08; align-self: end; }
+  .screen .frame { position: absolute; inset: 0; border-radius: var(--r) var(--r) 0 0; background: #fff; border: 1px solid var(--line); border-bottom: 0; box-shadow: 0 30px 70px -30px rgba(34,26,94,.35); overflow: hidden; }
+  .screen .bar { height: 44px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; padding: 0 18px; font-size: .8rem; color: var(--ink-3); }
+  .screen .bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .screen .bar b { font-weight: 600; color: var(--ink-2); margin-left: 6px; }
+  .screen svg { position: absolute; left: 0; right: 0; top: 44px; bottom: 0; width: 100%; height: calc(100% - 44px); }
+  .screen .tag { position: absolute; left: -14px; bottom: 88px; background: var(--indigo-ink); color: #fff; padding: 12px 18px; border-radius: 14px; font-size: .92rem; font-weight: 600; box-shadow: 0 12px 30px -10px rgba(23,18,63,.6); max-width: 230px; line-height: 1.35; }
+  .screen .tag small { display: block; font-weight: 400; color: #B7B0E0; font-size: .8rem; margin-top: 3px; }
+  @media (max-width: 900px) { .screen .tag { left: 8px; } }
+
+  /* trust strip */
+  .strip { background: var(--indigo-ink); color: #CBC5EA; font-size: .95rem; }
+  .strip .wrap { display: flex; flex-wrap: wrap; gap: 12px 40px; padding-top: 18px; padding-bottom: 18px; justify-content: center; }
+  .strip span { display: inline-flex; align-items: center; gap: 10px; }
+  .strip svg { width: 18px; height: 18px; color: var(--turq); }
+
+  /* identify */
+  .identify .wrap { display: grid; grid-template-columns: 1fr 1.15fr; gap: 72px; align-items: start; }
+  @media (max-width: 900px) { .identify .wrap { grid-template-columns: 1fr; gap: 36px; } }
+  .identify .sticky { position: sticky; top: 110px; }
+  .identify ul { list-style: none; }
+  .identify li { font-family: var(--serif); font-variation-settings: "SOFT" 100, "opsz" 40; font-size: clamp(1.25rem, 2vw, 1.6rem); line-height: 1.3; color: var(--indigo-ink); padding: 22px 0 22px 52px; border-bottom: 1px solid var(--line); position: relative; }
+  .identify li:first-child { border-top: 1px solid var(--line); }
+  .identify li::before { content: ""; position: absolute; left: 0; top: 30px; width: 24px; height: 24px; border-radius: 50%; background: var(--turq-mist); border: 2px solid var(--turq); }
+  .identify li::after { content: ""; position: absolute; left: 8px; top: 37px; width: 8px; height: 8px; border-radius: 50%; background: var(--turq); }
+  .identify .close { margin-top: 26px; font-size: 1.18rem; color: var(--ink-2); }
+  .identify .close strong { color: var(--indigo-ink); font-weight: 700; }
+
+  /* different */
+  .different { background: var(--paper-2); }
+  .different .head { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: end; }
+  @media (max-width: 900px) { .different .head { grid-template-columns: 1fr; gap: 16px; } }
+  .different .head p + p { margin-top: 14px; }
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
+  @media (max-width: 800px) { .pillars { grid-template-columns: 1fr; } }
+  .pillar { background: #fff; border-radius: var(--r); padding: 36px 32px 34px; border: 1px solid var(--line); }
+  .pillar .glyph { width: 54px; height: 54px; border-radius: 16px; background: var(--turq-mist); display: grid; place-items: center; margin-bottom: 26px; }
+  .pillar .glyph svg { width: 28px; height: 28px; color: var(--turq-deep); }
+  .pillar h3 { margin-bottom: 10px; }
+  .pillar p { color: var(--ink-2); font-size: 1rem; }
+
+  /* process */
+  .process { background: var(--indigo-ink); color: #fff; position: relative; overflow: hidden; }
+  .process::before { content: ""; position: absolute; right: -20%; top: -30%; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(closest-side, rgba(62,184,195,.22), transparent 70%); pointer-events: none; }
+  .process h2 { color: #fff; }
+  .process .lead { color: #B7B0E0; }
+  .steps { list-style: none; counter-reset: s; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 64px; position: relative; }
+  .steps::before { content: ""; position: absolute; left: 0; right: 0; top: 22px; height: 2px; background: linear-gradient(90deg, var(--turq), rgba(62,184,195,.15)); }
+  .steps li { counter-increment: s; padding: 0 28px 0 0; position: relative; }
+  .steps li::before { content: counter(s); display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--indigo-ink); border: 2px solid var(--turq); color: var(--turq); font-family: var(--serif); font-size: 1.3rem; font-weight: 500; position: relative; z-index: 1; margin-bottom: 26px; }
+  .steps h3 { color: #fff; font-size: 1.2rem; margin-bottom: 8px; }
+  .steps p { color: #C5BFE6; font-size: .96rem; line-height: 1.55; }
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: 1fr; gap: 0; margin-top: 48px; }
+    .steps::before { left: 22px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; background: linear-gradient(180deg, var(--turq), rgba(62,184,195,.15)); }
+    .steps li { display: grid; grid-template-columns: 46px 1fr; gap: 20px; padding: 0 0 34px; }
+    .steps li::before { margin: 0; grid-row: 1 / span 2; }
+    .steps li :is(h3, p) { grid-column: 2; }
   }
+  .process .btn { margin-top: 56px; }
+
+  /* services */
+  .services .layout { display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px; margin-top: 56px; }
+  @media (max-width: 900px) { .services .layout { grid-template-columns: 1fr; } }
+  .services .layout > *, .side > * { min-width: 0; }
+  .svc { border-radius: var(--r); padding: 40px; }
+  @media (max-width: 600px) { .svc { padding: 28px 24px; } }
+  .svc.main { background: var(--indigo); color: #fff; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; }
+  .svc.main h3 { color: #fff; font-size: 2rem; font-weight: 300; margin-bottom: 12px; }
+  .svc.main p { color: #C5BFE6; }
+  .svc.main ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin-top: 32px; }
+  @media (max-width: 480px) { .svc.main ul { grid-template-columns: 1fr; } }
+  .svc.main li { padding: 14px 18px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); font-weight: 600; }
+  .side { display: grid; gap: 24px; }
+  .svc.light { background: var(--paper-2); border: 1px solid var(--line); }
+  .svc.light h3 { margin-bottom: 6px; }
+  .svc.light p { color: var(--ink-2); font-size: .98rem; margin-bottom: 18px; }
+  .svc.light ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .svc.light li { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .95rem; font-weight: 600; color: var(--indigo-deep); }
+  .services .close { margin-top: 40px; font-family: var(--serif); font-size: 1.4rem; color: var(--indigo-ink); }
+
+  /* doctor */
+  .doctor { background: var(--turq-mist); }
+  .doctor .wrap { display: grid; grid-template-columns: .85fr 1.15fr; gap: 72px; align-items: center; }
+  @media (max-width: 900px) { .doctor .wrap { grid-template-columns: 1fr; gap: 36px; } }
+  .portrait { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r); overflow: hidden; background: linear-gradient(160deg, #fff, var(--turq-soft)); }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .portrait::after { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(62,184,195,.5); border-radius: calc(var(--r) - 12px); pointer-events: none; }
+  .doctor .name { font-family: var(--serif); font-size: 2rem; font-weight: 400; color: var(--indigo-ink); margin-top: 6px; }
+  .doctor .cred { color: var(--ink-2); margin: 4px 0 26px; }
+  .doctor p + p { margin-top: 16px; }
+  .doctor blockquote { margin: 30px 0 0; padding: 0 0 0 22px; border-left: 3px solid var(--turq); font-family: var(--serif); font-style: italic; font-size: 1.35rem; line-height: 1.35; color: var(--indigo-deep); max-width: 34ch; }
+  .team { list-style: none; margin-top: 34px; display: flex; flex-wrap: wrap; gap: 16px 28px; }
+  .team li { display: flex; align-items: center; gap: 12px; font-size: .93rem; color: var(--ink-2); }
+  .team img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; background: #fff; }
+  .team strong { display: block; color: var(--indigo-ink); }
+
+  /* cases */
+  .cases .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  @media (max-width: 800px) { .cases .grid { grid-template-columns: 1fr; } }
+  .case { border-radius: var(--r); overflow: hidden; background: var(--paper-2); border: 1px solid var(--line); }
+  .case .ba { display: grid; grid-template-columns: 1fr 1fr; aspect-ratio: 4 / 3; }
+  .case .ba img { width: 100%; height: 100%; object-fit: cover; }
+  .case .txt { padding: 22px 24px 26px; }
+  .case h3 { font-size: 1.15rem; margin-bottom: 8px; }
+  .case p { font-size: .95rem; color: var(--ink-2); }
+
+  /* faq */
+  .faq .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 72px; align-items: start; }
+  @media (max-width: 900px) { .faq .wrap { grid-template-columns: 1fr; gap: 24px; } }
+  .faq .sticky { position: sticky; top: 110px; }
+  details { border-bottom: 1px solid var(--line); }
+  details:first-of-type { border-top: 1px solid var(--line); }
+  summary { cursor: pointer; list-style: none; padding: 24px 48px 24px 0; font-family: var(--serif); font-variation-settings: "SOFT" 100, "opsz" 40; font-size: 1.3rem; color: var(--indigo-ink); position: relative; transition: color .15s; }
+  summary:hover { color: var(--indigo); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: ""; position: absolute; right: 6px; top: 30px; width: 14px; height: 14px; border-right: 2px solid var(--turq); border-bottom: 2px solid var(--turq); transform: rotate(45deg); transition: transform .2s; }
+  details[open] summary::after { transform: rotate(-135deg); top: 36px; }
+  details p { padding: 0 0 26px; color: var(--ink-2); max-width: 56ch; }
+
+  /* final */
+  .final { background: var(--indigo); color: #fff; text-align: center; position: relative; overflow: hidden; }
+  .final::before { content: ""; position: absolute; left: 50%; bottom: -78%; width: 120%; max-width: 1400px; aspect-ratio: 2 / 1; transform: translateX(-50%); border-radius: 50% 50% 0 0; border-top: 3px solid rgba(62,184,195,.5); pointer-events: none; }
+  .final h2 { color: #fff; margin: 0 auto .5em; max-width: 18ch; }
+  .final .lead { color: #C5BFE6; margin: 0 auto 40px; }
+  .final .btn { position: relative; }
+
+  /* location */
+  .location .wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: stretch; }
+  @media (max-width: 900px) { .location .wrap { grid-template-columns: 1fr; gap: 32px; } }
+  .location address { font-style: normal; margin: 6px 0 30px; line-height: 1.5; font-size: 1.05rem; }
+  .hours { list-style: none; margin: 10px 0 34px; max-width: 380px; }
+  .hours li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .hours li span:last-child { font-variant-numeric: tabular-nums; color: var(--ink-2); }
+  .location .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .map { border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); min-height: 380px; background: var(--paper-2); }
+  .map iframe { width: 100%; height: 100%; display: block; border: 0; min-height: 380px; }
 </style>

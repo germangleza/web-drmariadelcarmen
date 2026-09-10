@@ -1,7 +1,13 @@
 ---
 /** Página del equipo médico: se genera sola desde site.config.ts. Señal E-E-A-T central. */
+import fs from 'node:fs';
+import path from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config/site.config';
+
+// Mientras no se suba la foto a /public/team, se muestra un círculo con iniciales.
+const hasPhoto = (photo: string) => fs.existsSync(path.join(process.cwd(), 'public', photo));
+const initials = (name: string) => name.replace(/^Dra?\.\s*/i, '').split(/\s+/).filter((w) => /^[A-ZÁÉÍÓÚÑ]/.test(w)).slice(0, 2).map((w) => w[0]).join('');
 
 const schema = {
   '@context': 'https://schema.org',
@@ -15,34 +21,40 @@ const schema = {
       jobTitle: m.title,
       identifier: m.license,
       image: new URL(m.photo, SITE.url).href,
-      alumniOf: m.university,
+      ...(m.university ? { alumniOf: m.university } : {}),
       sameAs: m.sameAs,
       worksFor: { '@type': SITE.business.type, name: SITE.name },
     },
   })),
 };
 ---
-<BaseLayout title="Nuestro equipo médico" description={`Conoce a los especialistas de ${SITE.name}: credenciales, formación y experiencia.`}>
+<BaseLayout title="Nuestro equipo" description={`Conoce a quien te atiende en ${SITE.name}: credenciales, formación y experiencia.`}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-  <h1>Nuestro equipo médico</h1>
-  <div class="team-grid">
-    {SITE.medicalTeam.map((m) => (
-      <article class="team-card">
-        <img src={m.photo} alt={m.name} width="120" height="120" loading="lazy" />
-        <h2>{m.name}</h2>
-        <p class="team-title">{m.title}</p>
-        <p class="team-creds">{m.license}{m.licenseSpecialty && ` · ${m.licenseSpecialty}`}</p>
-        <p class="team-uni">{m.university}</p>
-        <p>{m.bio}</p>
-      </article>
-    ))}
+  <div class="page">
+    <h1>Nuestro equipo</h1>
+    <div class="team-grid">
+      {SITE.medicalTeam.map((m) => (
+        <article class="team-card">
+          {hasPhoto(m.photo)
+            ? <img src={m.photo} alt={m.name} width="120" height="120" loading="lazy" />
+            : <div class="team-placeholder" aria-hidden="true">{initials(m.name)}</div>}
+          <h2>{m.name}</h2>
+          <p class="team-title">{m.title}</p>
+          <p class="team-creds">{m.license}{m.licenseSpecialty && ` · ${m.licenseSpecialty}`}</p>
+          {m.university && <p class="team-uni">{m.university}</p>}
+          <p>{m.bio}</p>
+        </article>
+      ))}
+    </div>
   </div>
 </BaseLayout>
 <style>
   .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-  .team-card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; }
-  .team-card img { border-radius: 50%; object-fit: cover; background: #eee; }
-  .team-card h2 { margin: 0.75rem 0 0.25rem; font-size: 1.15rem; }
-  .team-title { margin: 0; color: #0e7490; font-weight: 500; font-size: 0.95rem; }
-  .team-creds, .team-uni { margin: 0.15rem 0; color: #666; font-size: 0.85rem; }
+  .team-card { border: 1px solid var(--line); border-radius: var(--r); padding: 1.5rem; background: var(--paper-2); }
+  .team-card img, .team-placeholder { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; background: var(--turq-soft); }
+  .team-placeholder { display: grid; place-items: center; font-family: var(--serif); font-size: 2.4rem; color: var(--turq-deep); }
+  .team-card h2 { margin: 0.75rem 0 0.25rem; font-size: 1.4rem; }
+  .team-title { margin: 0; color: var(--turq-deep); font-weight: 600; font-size: 0.95rem; }
+  .team-creds, .team-uni { margin: 0.15rem 0; color: var(--ink-2); font-size: 0.85rem; }
+  .team-card p:last-child { margin-top: 0.75rem; color: var(--ink-2); }
 </style>

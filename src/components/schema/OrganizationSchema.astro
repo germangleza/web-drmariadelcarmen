@@ -11,11 +11,9 @@ const schema: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': b.type,
   name: SITE.name,
-  legalName: b.legalName,
   url: SITE.url,
   logo: new URL(SITE.logo, SITE.url).href,
   image: new URL(SITE.ogImage, SITE.url).href,
-  email: b.email,
   telephone: b.phone,
   priceRange: b.priceRange,
   medicalSpecialty: b.specialties,
@@ -23,7 +21,7 @@ const schema: Record<string, unknown> = {
   sameAs: socialUrls(),
   address: {
     '@type': 'PostalAddress',
-    streetAddress: b.address.street,
+    streetAddress: [b.address.street, b.address.neighborhood].filter(Boolean).join(', '),
     addressLocality: b.address.city,
     addressRegion: b.address.state,
     postalCode: b.address.zip,
@@ -31,6 +29,8 @@ const schema: Record<string, unknown> = {
   },
 };
 
+if (b.legalName) schema.legalName = b.legalName;
+if (b.email) schema.email = b.email;
 if (b.geo.lat) {
   schema.geo = { '@type': 'GeoCoordinates', latitude: b.geo.lat, longitude: b.geo.lng };
 }
@@ -42,6 +42,7 @@ if (SITE.medicalTeam.length) {
     '@type': 'Physician',
     name: m.name,
     jobTitle: m.title,
+    identifier: m.license,
     image: new URL(m.photo, SITE.url).href,
     sameAs: m.sameAs,
   }));

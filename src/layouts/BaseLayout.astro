@@ -1,9 +1,11 @@
 ---
-/** Layout base: HTML semántico + SEO + schemas globales. Todas las páginas lo usan. */
+/** Layout base: HTML semántico + SEO + schemas globales + header/footer de marca. Todas las páginas lo usan. */
+import fs from 'node:fs';
+import path from 'node:path';
 import SEO from '../components/SEO.astro';
 import OrganizationSchema from '../components/schema/OrganizationSchema.astro';
 import WebSiteSchema from '../components/schema/WebSiteSchema.astro';
-import { SITE } from '../config/site.config';
+import { SITE, whatsappUrl } from '../config/site.config';
 import '../styles/global.css';
 
 interface Props {
@@ -17,6 +19,23 @@ interface Props {
   author?: string;
 }
 const props = Astro.props;
+
+// Si aún no se sube el logo a /public, el header muestra el nombre en texto.
+const hasLogo = fs.existsSync(path.join(process.cwd(), 'public', SITE.logo));
+const doctor = SITE.medicalTeam[0];
+const b = SITE.business;
+const instagramUrl = SITE.socials.instagram ? `https://www.instagram.com/${SITE.socials.instagram}/` : '';
+
+const navLinks = [
+  { href: '/#proceso', label: 'Cómo funciona' },
+  { href: '/#servicios', label: 'Servicios' },
+  { href: '/#doctora', label: 'La doctora' },
+  { href: '/#preguntas', label: 'Preguntas' },
+  { href: '/#ubicacion', label: 'Ubicación' },
+];
+
+const waAgendar = whatsappUrl('Hola, quiero una valoración de mi sonrisa');
+const waFoto = whatsappUrl('Hola, te mando una foto de mi sonrisa para saber qué opciones tengo');
 ---
 <!doctype html>
 <html lang={SITE.lang}>
@@ -27,31 +46,99 @@ const props = Astro.props;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
     <SEO {...props} />
     <OrganizationSchema />
     <WebSiteSchema />
     {SITE.analytics.plausibleDomain && (
       <script defer data-domain={SITE.analytics.plausibleDomain} src="https://plausible.io/js/script.js"></script>
     )}
+    {SITE.analytics.googleAnalyticsId && (
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.analytics.googleAnalyticsId}`}></script>
+    )}
+    {SITE.analytics.googleAnalyticsId && (
+      <script is:inline define:vars={{ gaId: SITE.analytics.googleAnalyticsId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', gaId);
+      </script>
+    )}
   </head>
   <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2 5 5 0 0 0 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.3z"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-8 4-14 16-16-1 12-7 16-16 16zM4 20l9-9"/></symbol>
+      <symbol id="i-screen" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 5h18v12H3zM8 21h8M12 17v4M7 12c2.5 2 7.5 2 10 0"/></symbol>
+      <symbol id="i-face" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8 14c1 1.5 2.5 2.2 4 2.2s3-.7 4-2.2M9 9.5h.01M15 9.5h.01"/></symbol>
+    </svg>
+
     <header class="site-header">
-      <nav aria-label="Principal">
-        <a href="/" class="brand">{SITE.name}</a>
-        <ul>
-          <li><a href="/equipo">Equipo</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/#contacto">Contacto</a></li>
-        </ul>
-      </nav>
+      <div class="wrap nav">
+        <a href="/" class="brand" aria-label="Inicio">
+          {hasLogo
+            ? <img src={SITE.logo} alt={SITE.name} width="180" height="54" />
+            : <span class="brand-text">{SITE.name}</span>}
+        </a>
+        <nav aria-label="Secciones">
+          <ul class="nav-links">
+            {navLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </nav>
+        <a class="btn btn-primary wa-link" href={waAgendar} target="_blank" rel="noopener">
+          <svg><use href="#i-wa"/></svg><span class="cta-text">Agendar valoración</span><span class="cta-short">WhatsApp</span>
+        </a>
+      </div>
     </header>
 
-    <main>
+    <main id="top">
       <slot />
     </main>
 
     <footer class="site-footer">
-      <p>© {new Date().getFullYear()} {SITE.business.legalName || SITE.name}. Todos los derechos reservados.</p>
+      <div class="wrap">
+        <div>
+          <div class="brand">{SITE.name}</div>
+          {doctor && <div>{doctor.name} · {doctor.title}</div>}
+          <div class="reg">
+            {doctor && <>Cédula profesional {doctor.license.replace(/^Céd\.\s*Prof\.\s*/i, '')}<br /></>}
+            {b.cofepris && <>COFEPRIS {b.cofepris}</>}
+          </div>
+          <p class="copy">© {new Date().getFullYear()} {b.legalName || SITE.name}. Todos los derechos reservados.</p>
+        </div>
+        <div>
+          <ul>
+            {navLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            <li><a href="/equipo">Equipo</a></li>
+            <li><a href="/blog">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li><a href={whatsappUrl()} target="_blank" rel="noopener">WhatsApp</a></li>
+            {instagramUrl && <li><a href={instagramUrl} target="_blank" rel="noopener">Instagram</a></li>}
+            {b.email && <li><a href={`mailto:${b.email}`}>{b.email}</a></li>}
+          </ul>
+          <div class="reg">Los resultados varían según cada paciente. Esta página no sustituye una valoración profesional.</div>
+        </div>
+      </div>
     </footer>
+
+    <div class="sticky-wa">
+      <a class="btn wa-link" href={waFoto} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Mándanos tu sonrisa por WhatsApp</a>
+    </div>
+
+    {SITE.analytics.googleAdsConversion && (
+      <script is:inline define:vars={{ sendTo: SITE.analytics.googleAdsConversion }}>
+        document.querySelectorAll('.wa-link').forEach(function (a) {
+          a.addEventListener('click', function () {
+            if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: sendTo });
+          });
+        });
+      </script>
+    )}
   </body>
 </html>
