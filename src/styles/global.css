@@ -87,7 +87,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .prose a { text-decoration: underline; }
 
 /* Footer */
-.site-footer { background: var(--indigo-ink); color: #B7B0E0; padding: 56px 0 120px; font-size: .93rem; }
+.site-footer { background: var(--indigo-ink); color: #B7B0E0; padding: 56px 0 96px; font-size: .93rem; }
 .site-footer .wrap { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 36px; }
 @media (max-width: 800px) { .site-footer .wrap { grid-template-columns: 1fr; } }
 .site-footer .brand { font-family: var(--serif); font-size: 1.5rem; color: #fff; margin-bottom: 12px; }
@@ -97,10 +97,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .site-footer .reg { color: #9088C7; margin-top: 8px; line-height: 1.5; }
 .site-footer .copy { color: #9088C7; margin-top: 18px; font-size: .85rem; }
 
-/* WhatsApp fijo en móvil */
-.sticky-wa { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 30; display: none; }
-.sticky-wa .btn { width: 100%; justify-content: center; background: var(--wa); color: #fff; box-shadow: 0 10px 28px rgba(0,0,0,.2); }
+/* WhatsApp flotante en móvil: círculo abajo a la derecha */
+.sticky-wa { position: fixed; right: 16px; bottom: 16px; z-index: 30; display: none; }
+.sticky-wa .btn { width: 60px; height: 60px; padding: 0; border-radius: 50%; justify-content: center; background: var(--wa); color: #fff; box-shadow: 0 10px 28px rgba(0,0,0,.25); }
+.sticky-wa .btn svg { width: 30px; height: 30px; }
+.sticky-wa .btn:hover { transform: translateY(-2px) scale(1.04); }
 @media (max-width: 720px) { .sticky-wa { display: block; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 /* Motion: aparición al hacer scroll. Solo se activa con JS (clase .js en <html>)
    para que sin JS todo sea visible. Respeta prefers-reduced-motion. */
