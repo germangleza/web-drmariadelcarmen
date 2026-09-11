@@ -17,7 +17,6 @@ const hasPortrait = fs.existsSync(path.join(process.cwd(), 'public', doctor.phot
 const licenseNumber = doctor.license.replace(/^Céd\.\s*Prof\.\s*/i, '');
 const hours = formatOpeningHours(b.openingHours);
 
-const waFoto = whatsappUrl('Hola, te mando una foto de mi sonrisa para saber qué opciones tengo');
 const waEmpezar = whatsappUrl('Hola, quiero empezar con una valoración');
 const waAgendar = whatsappUrl('Hola, quiero una valoración de mi sonrisa');
 
@@ -77,13 +76,8 @@ const faqs = [
         <h1>Tu sonrisa,<br /><em>pero mejor.</em></h1>
         <p class="lead">Estética dental conservadora en {b.address.city}. Mejoramos tu sonrisa desgastando lo menos posible tu diente, y lo ves en pantalla antes de empezar.</p>
         <div class="actions">
-          <a class="btn btn-primary wa-link" href={waFoto} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Mándanos una foto de tu sonrisa</a>
+          <a class="btn btn-primary wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
           <a class="btn btn-ghost" href="#proceso">Ver cómo sería mi proceso</a>
-        </div>
-        <div class="facts">
-          <span><i></i>Valoración sin compromiso</span>
-          <span><i></i>Lunes a sábado</span>
-          <span><i></i>{b.address.neighborhood}, {b.address.city}</span>
         </div>
       </div>
 
@@ -167,7 +161,7 @@ const faqs = [
       <div class="head" data-reveal-stagger>
         <h2 id="different-title">Conservar antes que cubrir.</h2>
         <div>
-          <p class="lead">En muchas clínicas la respuesta a todo es una carilla. Aquí no. Antes de proponer cualquier tratamiento revisamos si un aclaramiento, una resina o una corrección pequeña resuelve lo que no te gusta.</p>
+          <p class="lead">Revisamos si un aclaramiento, una resina o una corrección logra la sonrisa que tú deseas.</p>
           <p class="lead">Cuando sí se necesita una carilla, se hace con el mínimo desgaste del diente. El objetivo no es darte una sonrisa nueva: es mejorar la tuya.</p>
         </div>
       </div>
@@ -186,7 +180,6 @@ const faqs = [
   <section class="process" id="proceso" aria-labelledby="proceso-title">
     <div class="wrap">
       <h2 id="proceso-title" data-reveal>Así renovamos tu sonrisa contigo.</h2>
-      <p class="lead" data-reveal style="--d:120ms">Cinco pasos, sin sorpresas. Tú decides en cada uno.</p>
       <ol class="steps" data-reveal-stagger>
         {steps.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
       </ol>
@@ -197,7 +190,7 @@ const faqs = [
   <section class="services" id="servicios" aria-labelledby="servicios-title">
     <div class="wrap">
       <h2 id="servicios-title" data-reveal>Estética que empieza por una boca sana.</h2>
-      <p class="lead" data-reveal style="--d:120ms">Una carilla sobre un diente enfermo no dura. Por eso en la clínica hay especialistas para toda la boca: la doctora diagnostica y, según tu caso, lo trabaja ella o te canaliza con el especialista adecuado del equipo.</p>
+      <p class="lead" data-reveal style="--d:120ms">En la clínica contamos con diferentes especialistas: la doctora diagnostica y, según tu caso, lo trabaja ella o te canaliza con el especialista adecuado del equipo.</p>
       <div class="layout" data-reveal-stagger>
         <div class="svc main">
           <div>
@@ -284,8 +277,8 @@ const faqs = [
 
   <section class="final" aria-labelledby="final-title">
     <div class="wrap" data-reveal-stagger>
-      <h2 id="final-title">¿Qué podríamos hacer con tu sonrisa?</h2>
-      <p class="lead">Mándanos una foto por WhatsApp y te decimos qué opciones tienes. Sin compromiso y sin que te vendamos algo que no necesitas.</p>
+      <h2 id="final-title">Imagina sonreír sin pensarlo.</h2>
+      <p class="lead">En cada foto, en cada risa, en cada conversación. Tu mejor sonrisa ya está ahí; nosotros te ayudamos a revelarla. Agenda tu valoración y te decimos, sin compromiso, cómo llegar a ella.</p>
       <a class="btn btn-turq wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
     </div>
   </section>
@@ -331,9 +324,6 @@ const faqs = [
   @media (max-width: 900px) { .hero-copy { padding-bottom: 0; } }
   .hero .lead { margin: 28px 0 38px; max-width: 46ch; }
   .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-  .hero .facts { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 34px; color: var(--ink-2); font-size: .95rem; }
-  .hero .facts span { display: inline-flex; align-items: center; gap: 8px; }
-  .hero .facts i { width: 8px; height: 8px; border-radius: 50%; background: var(--turq); display: inline-block; }
 
   /* motion: entrada del hero (sin observer, está arriba del pliegue) */
   @keyframes fade-up { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
@@ -343,7 +333,6 @@ const faqs = [
   .hero-copy > * { animation: fade-up .9s cubic-bezier(.2, .7, .2, 1) both; }
   .hero-copy > :nth-child(2) { animation-delay: .12s; }
   .hero-copy > :nth-child(3) { animation-delay: .24s; }
-  .hero-copy > :nth-child(4) { animation-delay: .36s; }
   .screen { animation: fade-up 1s .3s cubic-bezier(.2, .7, .2, 1) both; }
   .screen .tag { animation: pop-in .6s 1.5s cubic-bezier(.2, .7, .2, 1) both; }
   .screen .guias { opacity: 0; animation: fade-in .8s .9s ease both; }
