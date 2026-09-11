@@ -17,7 +17,6 @@ const hasPortrait = fs.existsSync(path.join(process.cwd(), 'public', doctor.phot
 const licenseNumber = doctor.license.replace(/^Céd\.\s*Prof\.\s*/i, '');
 const hours = formatOpeningHours(b.openingHours);
 
-const waEmpezar = whatsappUrl('Hola, quiero empezar con una valoración');
 const waAgendar = whatsappUrl('Hola, quiero una valoración de mi sonrisa');
 
 const painPoints = [
@@ -36,7 +35,7 @@ const pillars = [
 ];
 
 const steps = [
-  { title: 'Valoración con la doctora', text: 'Revisa tu boca, escucha qué te gustaría cambiar y toma fotografías. Si tu caso necesita un especialista, te lo dice ahí mismo. Sin compromiso.' },
+  { title: 'Valoración con la doctora', text: 'Revisa tu boca, escucha qué te gustaría cambiar y toma fotografías.' },
   { title: 'Diseño digital', text: 'Escaneamos tus dientes y diseñamos tu sonrisa en pantalla. Aquí ves cómo quedaría.' },
   { title: 'Prueba de sonrisa', text: 'Te la probamos en la boca antes de tocar un solo diente. Si algo no te convence, se ajusta.' },
   { title: 'Tratamiento', text: 'Se hace solo lo necesario, con el menor desgaste posible.' },
@@ -74,7 +73,7 @@ const faqs = [
     <div class="wrap">
       <div class="hero-copy">
         <h1>Tu sonrisa,<br /><em>pero mejor.</em></h1>
-        <p class="lead">Estética dental conservadora en {b.address.city}. Mejoramos tu sonrisa desgastando lo menos posible tu diente, y lo ves en pantalla antes de empezar.</p>
+        <p class="lead">Clínica de estética dental en {b.address.city}. Mejoramos tu sonrisa desgastando lo menos posible tus dientes, y lo ves en pantalla antes de empezar.</p>
         <div class="actions">
           <a class="btn btn-primary wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
           <a class="btn btn-ghost" href="#proceso">Ver cómo sería mi proceso</a>
@@ -130,7 +129,6 @@ const faqs = [
             </g>
           </svg>
         </div>
-        <div class="tag">Así lo ves antes de tocar un solo diente<small>Diseño digital y prueba de sonrisa</small></div>
       </div>
     </div>
   </section>
@@ -161,7 +159,7 @@ const faqs = [
       <div class="head" data-reveal-stagger>
         <h2 id="different-title">Conservar antes que cubrir.</h2>
         <div>
-          <p class="lead">Revisamos si un aclaramiento, una resina o una corrección logra la sonrisa que tú deseas.</p>
+          <p class="lead">Durante la valoración revisamos si un aclaramiento, una resina o una corrección logra la sonrisa que tú deseas.</p>
           <p class="lead">Cuando sí se necesita una carilla, se hace con el mínimo desgaste del diente. El objetivo no es darte una sonrisa nueva: es mejorar la tuya.</p>
         </div>
       </div>
@@ -183,7 +181,7 @@ const faqs = [
       <ol class="steps" data-reveal-stagger>
         {steps.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
       </ol>
-      <a class="btn btn-turq wa-link" data-reveal href={waEmpezar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Quiero empezar con una valoración</a>
+      <a class="btn btn-turq wa-link" data-reveal href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
     </div>
   </section>
 
@@ -210,6 +208,7 @@ const faqs = [
         </div>
       </div>
       <p class="close" data-reveal>¿No sabes qué necesitas? Para eso está la valoración.</p>
+      <a class="btn btn-primary wa-link close-cta" data-reveal href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
     </div>
   </section>
 
@@ -262,7 +261,7 @@ const faqs = [
     <div class="wrap">
       <div class="sticky" data-reveal>
         <h2 id="faq-title">Lo que la gente pregunta antes de venir.</h2>
-        <p class="lead">Si tu duda no está aquí, mándala por WhatsApp. Respondemos nosotros, no un bot.</p>
+        <p class="lead">Si tu duda no está aquí, pregunta por WhatsApp.</p>
       </div>
       <div data-reveal-stagger>
         {faqs.map((f) => (
@@ -297,7 +296,7 @@ const faqs = [
         </ul>
         <div class="actions">
           {b.mapsUrl && <a class="btn btn-ghost" href={b.mapsUrl} target="_blank" rel="noopener">Cómo llegar</a>}
-          <a class="btn btn-primary wa-link" href={whatsappUrl()} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a>
+          <a class="btn btn-primary wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
         </div>
       </div>
       {b.mapsEmbedUrl && (
@@ -334,7 +333,6 @@ const faqs = [
   .hero-copy > :nth-child(2) { animation-delay: .12s; }
   .hero-copy > :nth-child(3) { animation-delay: .24s; }
   .screen { animation: fade-up 1s .3s cubic-bezier(.2, .7, .2, 1) both; }
-  .screen .tag { animation: pop-in .6s 1.5s cubic-bezier(.2, .7, .2, 1) both; }
   .screen .guias { opacity: 0; animation: fade-in .8s .9s ease both; }
   .screen .propuesta rect { stroke-dasharray: 220; stroke-dashoffset: 220; animation: draw 1.1s 1.1s ease-out both; }
   @media (prefers-reduced-motion: reduce) {
@@ -349,9 +347,6 @@ const faqs = [
   .screen .bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
   .screen .bar b { font-weight: 600; color: var(--ink-2); margin-left: 6px; }
   .screen svg { position: absolute; left: 0; right: 0; top: 44px; bottom: 0; width: 100%; height: calc(100% - 44px); }
-  .screen .tag { position: absolute; left: -14px; bottom: 88px; background: var(--indigo-ink); color: #fff; padding: 12px 18px; border-radius: 14px; font-size: .92rem; font-weight: 600; box-shadow: 0 12px 30px -10px rgba(23,18,63,.6); max-width: 230px; line-height: 1.35; }
-  .screen .tag small { display: block; font-weight: 400; color: #B7B0E0; font-size: .8rem; margin-top: 3px; }
-  @media (max-width: 900px) { .screen .tag { left: 8px; } }
 
   /* trust strip */
   .strip { background: var(--indigo-ink); color: #CBC5EA; font-size: .95rem; }
@@ -434,6 +429,7 @@ const faqs = [
   .svc.light li:hover { background: var(--turq-mist); border-color: var(--turq-soft); }
   .svc.light li { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .95rem; font-weight: 600; color: var(--indigo-deep); }
   .services .close { margin-top: 40px; font-family: var(--serif); font-size: 1.4rem; color: var(--indigo-ink); }
+  .services .close-cta { margin-top: 24px; }
 
   /* doctor */
   .doctor { background: var(--turq-mist); }

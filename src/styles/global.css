@@ -63,14 +63,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 @media (max-width: 599px) { .nav .brand img { height: 54px; } }
 .nav .brand-text { font-family: var(--serif); font-size: 1.25rem; color: var(--indigo-ink); line-height: 1.15; }
 @media (min-width: 600px) { .nav .brand-text { white-space: nowrap; } }
-@media (max-width: 599px) { .nav .brand-text { font-size: 1rem; max-width: 11rem; } .nav .btn { padding: 10px 16px; } }
+@media (max-width: 599px) { .nav .brand-text { font-size: 1rem; max-width: 11rem; } .nav .btn { padding: 10px 14px; } }
 .nav-links { display: none; gap: 30px; font-weight: 600; font-size: .97rem; list-style: none; }
 .nav-links a { color: var(--ink-2); text-decoration: none; white-space: nowrap; }
 .nav-links a:hover { color: var(--indigo); }
 @media (min-width: 900px) { .nav-links { display: flex; } }
 .nav .btn { padding: 12px 22px; font-size: .95rem; }
-.nav .cta-text { display: none; } .nav .cta-short { display: inline; }
-@media (min-width: 600px) { .nav .cta-text { display: inline; } .nav .cta-short { display: none; } }
+@media (max-width: 599px) { .nav .btn { font-size: .82rem; gap: 8px; } .nav .btn svg { width: 18px; height: 18px; } }
 
 /* Páginas interiores (blog, equipo, 404) */
 .page { max-width: var(--w); margin: 0 auto; padding: 56px 28px 96px; }
