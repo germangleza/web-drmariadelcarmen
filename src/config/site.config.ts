@@ -53,7 +53,7 @@ export const SITE = {
     geo: { lat: 16.748123, lng: -93.140493 }, // Clave para "cerca de mí"
     openingHours: ['Mo-Fr 09:00-20:30', 'Sa 10:00-16:30'],
     /** Enlace "Cómo llegar" (Google Maps / Google Business) */
-    mapsUrl: 'https://share.google/uyT6LKYCROwN8vK83',
+    mapsUrl: 'https://share.google/XqRTaV8BsbJHN1oUe',
     /** URL del iframe de Google Maps (Compartir → Insertar un mapa) */
     mapsEmbedUrl:
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7641.14684309689!2d-93.14049338811525!3d16.748123183967536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ecd92ceb051713%3A0x8d2176bc865df5de!2sDra%20Mar%C3%ADa%20del%20Carmen%20Estetica%20Dental!5e0!3m2!1ses-419!2smx!4v1789068606287!5m2!1ses-419!2smx',
