@@ -59,7 +59,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 82px; gap: 16px; }
 .nav .brand { display: inline-flex; align-items: center; text-decoration: none; }
-.nav .brand img { height: 54px; width: auto; mix-blend-mode: multiply; }
+.nav .brand img { height: 66px; width: auto; mix-blend-mode: multiply; }
+@media (max-width: 599px) { .nav .brand img { height: 54px; } }
 .nav .brand-text { font-family: var(--serif); font-size: 1.25rem; color: var(--indigo-ink); line-height: 1.15; }
 @media (min-width: 600px) { .nav .brand-text { white-space: nowrap; } }
 @media (max-width: 599px) { .nav .brand-text { font-size: 1rem; max-width: 11rem; } .nav .btn { padding: 10px 16px; } }
