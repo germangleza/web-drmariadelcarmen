@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE } from '../config/site.config';
+import { SITE, avatarPhoto } from '../config/site.config';
 
 // Mientras no se suba la foto a /public/team, se muestra un círculo con iniciales.
 const hasPhoto = (photo: string) => fs.existsSync(path.join(process.cwd(), 'public', photo));
@@ -35,8 +35,8 @@ const schema = {
     <div class="team-grid" data-reveal-stagger>
       {SITE.medicalTeam.map((m) => (
         <article class="team-card">
-          {hasPhoto(m.photo)
-            ? <img src={m.photo} alt={m.name} width="120" height="120" loading="lazy" />
+          {hasPhoto(avatarPhoto(m))
+            ? <img src={avatarPhoto(m)} alt={m.name} width="120" height="120" loading="lazy" />
             : <div class="team-placeholder" aria-hidden="true">{initials(m.name)}</div>}
           <h2>{m.name}</h2>
           <p class="team-title">{m.title}</p>

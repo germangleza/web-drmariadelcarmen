@@ -73,7 +73,8 @@ export const SITE = {
       license: 'Céd. Prof. 5112969',         // Cédula profesional — señal de confianza clave
       licenseSpecialty: '',                  // Cédula de especialidad (si aplica)
       university: '',                        // TODO: universidad de egreso (dato real, no inventar)
-      photo: '/team/dra-maria-del-carmen.jpg', // Subir a public/team/ — vertical 4:5, fondo claro
+      photo: '/team/dra-maria-del-carmen.jpg',        // Retrato vertical 4:5 (sección "La doctora")
+      avatar: '/team/dra-maria-del-carmen-avatar.jpg', // Opcional: recorte cuadrado para avatares circulares
       bio: 'Hace tu valoración y tu diagnóstico. Si tu caso es estético, lo trabaja ella. Si necesitas un especialista (ortodoncia, endodoncia, implantes, cirugía o atención infantil), te canaliza con uno de los doctores de su equipo, en la misma clínica.',
       sameAs: [] as string[],                // LinkedIn, Doctoralia, etc. — refuerza E-E-A-T
     },
@@ -122,6 +123,11 @@ export function socialUrls(): string[] {
     s.youtube && `https://youtube.com/@${s.youtube}`,
     s.tiktok && `https://tiktok.com/@${s.tiktok}`,
   ].filter(Boolean) as string[];
+}
+
+/** Foto para avatares circulares (equipo, autoría del blog): usa `avatar` si el médico lo tiene. */
+export function avatarPhoto(m: TeamMember): string {
+  return (m as { avatar?: string }).avatar ?? m.photo;
 }
 
 export function getTeamMember(id: string): TeamMember | undefined {
