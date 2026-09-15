@@ -354,17 +354,18 @@ const faqs = [
   .svc.main { background: var(--indigo); color: #fff; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; }
   .svc.main h3 { color: #fff; font-size: 2rem; font-weight: 300; margin-bottom: 12px; }
   .svc.main p { color: #C5BFE6; }
-  .svc.main ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin-top: 32px; }
-  @media (max-width: 480px) { .svc.main ul { grid-template-columns: 1fr; } }
-  .svc.main li { padding: 14px 18px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); font-weight: 600; }
+  /* Los tratamientos se listan igual en las tres tarjetas; solo cambian los colores. */
+  .svc ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+  @media (max-width: 480px) { .svc ul { grid-template-columns: 1fr; } }
+  .svc li { padding: 14px 18px; border-radius: 14px; border: 1px solid; font-weight: 600; }
+  .svc.main ul { margin-top: 32px; }
+  .svc.main li { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.12); }
   .side { display: grid; gap: 24px; }
   .svc.light { background: var(--paper-2); border: 1px solid var(--line); }
   .svc.light h3 { margin-bottom: 6px; }
   .svc.light p { color: var(--ink-2); font-size: .98rem; margin-bottom: 18px; }
-  .svc.light ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
-  .svc.light li { transition: background .2s, border-color .2s; }
+  .svc.light li { background: #fff; border-color: var(--line); color: var(--indigo-deep); transition: background .2s, border-color .2s; }
   .svc.light li:hover { background: var(--turq-mist); border-color: var(--turq-soft); }
-  .svc.light li { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .95rem; font-weight: 600; color: var(--indigo-deep); }
   .services .close { margin-top: 40px; font-family: var(--serif); font-size: 1.4rem; color: var(--indigo-ink); }
   .services .close-cta { margin-top: 24px; }
 
