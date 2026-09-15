@@ -72,11 +72,12 @@ const faqs = [
   <section class="hero">
     <div class="wrap">
       <div class="hero-copy">
+        <p class="eyebrow">Estética dental · {b.address.city}</p>
         <h1>Tu sonrisa,<br /><em>pero mejor.</em></h1>
-        <p class="lead">Clínica de estética dental en {b.address.city}. Mejoramos tu sonrisa desgastando lo menos posible tus dientes, y lo ves en pantalla antes de empezar.</p>
+        <p class="lead">Carillas, resinas y aclaramiento cuidando al máximo tu diente natural. Ves el resultado en pantalla antes de empezar.</p>
         <div class="actions">
           <a class="btn btn-primary wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
-          <a class="btn btn-ghost" href="#proceso">Ver cómo sería mi proceso</a>
+          <a class="btn btn-ghost" href="#proceso">Ver cómo funciona</a>
         </div>
       </div>
     </div>
@@ -85,7 +86,7 @@ const faqs = [
   <div class="strip">
     <div class="wrap" data-reveal-stagger>
       <span><svg><use href="#i-check"/></svg>Céd. Prof. {licenseNumber}</span>
-      {b.cofepris && <span><svg><use href="#i-check"/></svg>COFEPRIS {b.cofepris}</span>}
+      {b.cofepris && <span class="only-desktop"><svg><use href="#i-check"/></svg>COFEPRIS {b.cofepris}</span>}
       <span><svg><use href="#i-check"/></svg>Especialistas en la misma clínica</span>
       <span><svg><use href="#i-check"/></svg>Opciones de financiamiento</span>
     </div>
@@ -268,6 +269,7 @@ const faqs = [
   .hero { padding: 56px 0 0; background: linear-gradient(180deg, #fff 0%, var(--turq-mist) 100%); position: relative; overflow: hidden; }
   .hero .wrap { padding-bottom: 72px; }
   .hero-copy { max-width: 42rem; }
+  .hero .eyebrow { font-weight: 700; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; color: var(--turq-deep); margin-bottom: 18px; }
   .hero .lead { margin: 28px 0 38px; max-width: 46ch; }
   .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 
@@ -279,11 +281,14 @@ const faqs = [
   .hero-copy > * { animation: fade-up .9s cubic-bezier(.2, .7, .2, 1) both; }
   .hero-copy > :nth-child(2) { animation-delay: .12s; }
   .hero-copy > :nth-child(3) { animation-delay: .24s; }
+  .hero-copy > :nth-child(4) { animation-delay: .36s; }
 
   /* trust strip */
   .strip { background: var(--indigo-ink); color: #CBC5EA; font-size: .95rem; }
   .strip .wrap { display: flex; flex-wrap: wrap; gap: 12px 40px; padding-top: 18px; padding-bottom: 18px; justify-content: center; }
   .strip span { display: inline-flex; align-items: center; gap: 10px; }
+  /* En móvil la barra se queda en 3 sellos: el registro COFEPRIS ya aparece en el footer. */
+  @media (max-width: 720px) { .strip .only-desktop { display: none; } }
   .strip svg { width: 18px; height: 18px; color: var(--turq); }
 
   /* identify */
