@@ -58,9 +58,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 82px; gap: 16px; }
-.nav .brand { display: inline-flex; align-items: center; text-decoration: none; }
-.nav .brand img { height: 66px; width: auto; mix-blend-mode: multiply; }
-@media (max-width: 599px) { .nav .brand img { height: 54px; } }
+/* flex: none + max-width: none evitan que el header comprima el logo y lo deforme. */
+.nav .brand { display: inline-flex; align-items: center; text-decoration: none; flex: none; }
+.nav .brand img { height: 66px; width: auto; max-width: none; mix-blend-mode: multiply; }
+@media (max-width: 599px) { .nav .brand img { height: 50px; } }
+@media (max-width: 380px) { .nav .brand img { height: 44px; } }
 .nav .brand-text { font-family: var(--serif); font-size: 1.25rem; color: var(--indigo-ink); line-height: 1.15; }
 @media (min-width: 600px) { .nav .brand-text { white-space: nowrap; } }
 @media (max-width: 599px) { .nav .brand-text { font-size: 1rem; max-width: 11rem; } .nav .btn { padding: 10px 14px; } }
@@ -68,8 +70,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .nav-links a { color: var(--ink-2); text-decoration: none; white-space: nowrap; }
 .nav-links a:hover { color: var(--indigo); }
 @media (min-width: 900px) { .nav-links { display: flex; } }
-.nav .btn { padding: 12px 22px; font-size: .95rem; }
+.nav .btn { padding: 12px 22px; font-size: .95rem; flex: 0 1 auto; min-width: 0; }
 @media (max-width: 599px) { .nav .btn { font-size: .82rem; gap: 8px; } .nav .btn svg { width: 18px; height: 18px; } }
+@media (max-width: 480px) { .site-header .wrap { padding: 0 18px; } }
+@media (max-width: 380px) { .nav .btn { font-size: .78rem; padding: 9px 12px; } .nav .btn svg { width: 16px; height: 16px; } }
+@media (max-width: 345px) { .nav .btn { font-size: .7rem; padding: 8px 11px; gap: 6px; } .nav .btn svg { width: 15px; height: 15px; } }
 
 /* Páginas interiores (blog, equipo, 404) */
 .page { max-width: var(--w); margin: 0 auto; padding: 56px 28px 96px; }
