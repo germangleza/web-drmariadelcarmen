@@ -270,7 +270,7 @@ const faqs = [
   .hero::before {
     content: ""; position: absolute; inset: 0; pointer-events: none;
     background-image:
-      linear-gradient(95deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.93) 40%, rgba(255,255,255,.6) 66%, rgba(234,247,248,.35) 100%),
+      linear-gradient(100deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.95) 34%, rgba(255,255,255,.78) 48%, rgba(255,255,255,.28) 64%, rgba(255,255,255,.06) 100%),
       url("/clinica-fachada.jpg");
     background-size: cover, cover;
     background-position: center, center 62%;
@@ -279,16 +279,18 @@ const faqs = [
   @media (max-width: 900px) {
     .hero::before {
       background-image:
-        linear-gradient(180deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.93) 52%, rgba(255,255,255,.7) 100%),
+        linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.92) 46%, rgba(255,255,255,.55) 70%, rgba(255,255,255,.18) 100%),
         url("/clinica-fachada-movil.jpg");
       background-position: center, center top;
     }
   }
   .hero .wrap { position: relative; z-index: 1; padding-bottom: 96px; }
   .hero-copy { max-width: 42rem; }
-  .hero .eyebrow { font-weight: 700; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; color: var(--turq-deep); margin-bottom: 18px; }
-  .hero .lead { margin: 28px 0 38px; max-width: 46ch; }
+  .hero .eyebrow { font-weight: 700; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; color: #156470; margin-bottom: 18px; }
+  .hero .lead { margin: 28px 0 38px; max-width: 46ch; color: var(--ink); }
   .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .hero .btn-ghost { background: rgba(255,255,255,.82); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+  .hero .btn-ghost:hover { background: #fff; }
 
   /* motion: entrada del hero (sin observer, está arriba del pliegue) */
   @keyframes fade-up { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
