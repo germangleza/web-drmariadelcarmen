@@ -270,7 +270,7 @@ const faqs = [
   .hero::before {
     content: ""; position: absolute; inset: 0; pointer-events: none;
     background-image:
-      linear-gradient(100deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.95) 34%, rgba(255,255,255,.78) 48%, rgba(255,255,255,.28) 64%, rgba(255,255,255,.06) 100%),
+      linear-gradient(100deg, rgba(255,255,255,.8) 0%, rgba(255,255,255,.66) 34%, rgba(255,255,255,.34) 50%, rgba(255,255,255,.1) 68%, rgba(255,255,255,0) 100%),
       url("/clinica-fachada.jpg");
     background-size: cover, cover;
     background-position: center, center 62%;
@@ -279,17 +279,18 @@ const faqs = [
   @media (max-width: 900px) {
     .hero::before {
       background-image:
-        linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.92) 46%, rgba(255,255,255,.55) 70%, rgba(255,255,255,.18) 100%),
+        linear-gradient(180deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.66) 45%, rgba(255,255,255,.34) 68%, rgba(255,255,255,.08) 100%),
         url("/clinica-fachada-movil.jpg");
       background-position: center, center top;
     }
   }
   .hero .wrap { position: relative; z-index: 1; padding-bottom: 96px; }
   .hero-copy { max-width: 42rem; }
-  .hero .eyebrow { font-weight: 700; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; color: #156470; margin-bottom: 18px; }
-  .hero .lead { margin: 28px 0 38px; max-width: 46ch; color: var(--ink); }
+  .hero-copy :is(.eyebrow, h1, .lead) { text-shadow: 0 1px 2px rgba(255,255,255,.95), 0 0 16px rgba(255,255,255,.85), 0 0 36px rgba(255,255,255,.7); }
+  .hero .eyebrow { font-weight: 700; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; color: #12555F; margin-bottom: 18px; }
+  .hero .lead { margin: 28px 0 38px; max-width: 46ch; color: var(--ink); font-weight: 600; }
   .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-  .hero .btn-ghost { background: rgba(255,255,255,.82); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+  .hero .btn-ghost { background: rgba(255,255,255,.9); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
   .hero .btn-ghost:hover { background: #fff; }
 
   /* motion: entrada del hero (sin observer, está arriba del pliegue) */
