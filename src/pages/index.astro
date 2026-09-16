@@ -265,9 +265,26 @@ const faqs = [
   section { padding: 112px 0; }
   @media (max-width: 720px) { section { padding: 72px 0; } }
 
-  /* hero */
-  .hero { padding: 56px 0 0; background: linear-gradient(180deg, #fff 0%, var(--turq-mist) 100%); position: relative; overflow: hidden; }
-  .hero .wrap { padding-bottom: 72px; }
+  /* hero: fachada de la clínica de fondo, con un velo claro que mantiene legible el texto */
+  .hero { padding: 96px 0 0; background: linear-gradient(180deg, #fff 0%, var(--turq-mist) 100%); position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(95deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.93) 40%, rgba(255,255,255,.6) 66%, rgba(234,247,248,.35) 100%),
+      url("/clinica-fachada.jpg");
+    background-size: cover, cover;
+    background-position: center, center 62%;
+    background-repeat: no-repeat;
+  }
+  @media (max-width: 900px) {
+    .hero::before {
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.93) 52%, rgba(255,255,255,.7) 100%),
+        url("/clinica-fachada-movil.jpg");
+      background-position: center, center top;
+    }
+  }
+  .hero .wrap { position: relative; z-index: 1; padding-bottom: 96px; }
   .hero-copy { max-width: 42rem; }
   .hero .eyebrow { font-weight: 700; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; color: var(--turq-deep); margin-bottom: 18px; }
   .hero .lead { margin: 28px 0 38px; max-width: 46ch; }
