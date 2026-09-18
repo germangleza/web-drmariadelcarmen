@@ -207,31 +207,6 @@ const faqs = [
     </section>
   )}
 
-  <section class="faq" id="preguntas" aria-labelledby="faq-title">
-    <div class="wrap">
-      <div class="sticky" data-reveal>
-        <h2 id="faq-title">Lo que la gente pregunta antes de venir.</h2>
-        <p class="lead">Si tu duda no está aquí, pregunta por WhatsApp.</p>
-      </div>
-      <div data-reveal-stagger>
-        {faqs.map((f) => (
-          <details>
-            <summary>{f.question}</summary>
-            <p>{f.answer}</p>
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="final" aria-labelledby="final-title">
-    <div class="wrap" data-reveal-stagger>
-      <h2 id="final-title">Imagina sonreír sin pensarlo.</h2>
-      <p class="lead">En cada foto, en cada risa, en cada conversación. Tu mejor sonrisa ya está ahí; nosotros te ayudamos a revelarla. Agenda tu valoración y te decimos, sin compromiso, cómo llegar a ella.</p>
-      <a class="btn btn-turq wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
-    </div>
-  </section>
-
   <section class="location" id="ubicacion" aria-labelledby="ubicacion-title">
     <div class="wrap">
       <div data-reveal>
@@ -254,6 +229,31 @@ const faqs = [
           <iframe src={b.mapsEmbedUrl} allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Mapa de la clínica"></iframe>
         </div>
       )}
+    </div>
+  </section>
+
+  <section class="final" aria-labelledby="final-title">
+    <div class="wrap" data-reveal-stagger>
+      <h2 id="final-title">Imagina sonreír sin pensarlo.</h2>
+      <p class="lead">En cada foto, en cada risa, en cada conversación. Tu mejor sonrisa ya está ahí; nosotros te ayudamos a revelarla. Agenda tu valoración y te decimos, sin compromiso, cómo llegar a ella.</p>
+      <a class="btn btn-turq wa-link" href={waAgendar} target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Agendar valoración</a>
+    </div>
+  </section>
+
+  <section class="faq" id="preguntas" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="sticky" data-reveal>
+        <h2 id="faq-title">Lo que la gente pregunta antes de venir.</h2>
+        <p class="lead">Si tu duda no está aquí, pregunta por WhatsApp.</p>
+      </div>
+      <div data-reveal-stagger>
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.question}</summary>
+            <p>{f.answer}</p>
+          </details>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
