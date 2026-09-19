@@ -5,6 +5,7 @@
  * para contenido médico en Google.
  */
 import { SITE, getTeamMember } from '../../config/site.config';
+import { canonicalUrl } from '../../utils/canonical';
 
 interface Props {
   title: string;
@@ -44,7 +45,7 @@ const schema: Record<string, unknown> = {
     name: SITE.name,
     logo: { '@type': 'ImageObject', url: new URL(SITE.logo, SITE.url).href },
   },
-  mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url.href },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl(Astro.url.pathname) },
 };
 
 if (reviewer) {

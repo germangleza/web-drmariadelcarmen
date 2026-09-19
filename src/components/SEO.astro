@@ -4,6 +4,7 @@
  * Genera: title, description, canonical, Open Graph, Twitter Cards, robots.
  */
 import { SITE } from '../config/site.config';
+import { canonicalUrl } from '../utils/canonical';
 
 interface Props {
   title?: string;
@@ -29,7 +30,7 @@ const {
 } = Astro.props;
 
 const pageTitle = title ? `${title} | ${SITE.name}` : SITE.title;
-const canonical = Astro.props.canonical ?? new URL(Astro.url.pathname, SITE.url).href;
+const canonical = Astro.props.canonical ?? canonicalUrl(Astro.url.pathname);
 const ogImage = new URL(image, SITE.url).href;
 ---
 

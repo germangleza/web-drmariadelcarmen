@@ -44,7 +44,7 @@ const fmt = (d: Date) => d.toLocaleDateString(SITE.lang, { year: 'numeric', mont
     reviewDate={reviewDate.toISOString()}
     image={image}
   />
-  <BreadcrumbSchema items={[{ name: SITE.blog.title, url: '/blog' }, { name: title, url: Astro.url.pathname }]} />
+  <BreadcrumbSchema items={[{ name: SITE.blog.title, url: '/blog' }, { name: title, url: Astro.url.pathname.replace(/\.html$/, '') }]} />
 
   <div class="page">
   <article class="post">
